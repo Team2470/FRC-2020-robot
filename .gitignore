@@ -1,8 +1,5 @@
 # Created by https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
 
-### Dash
-dash/build/**
-
 ### C++ ###
 # Prerequisites
 *.d
@@ -51,6 +48,7 @@ dash/build/**
 .mtj.tmp/
 
 # Package Files #
+*.jar
 *.war
 *.nar
 *.ear
