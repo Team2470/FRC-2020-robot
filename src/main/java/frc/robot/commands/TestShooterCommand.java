@@ -42,6 +42,7 @@ public class TestShooterCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
+    SmartDashboard.putNumber("Shooter Output", 0.0);
   }
 
   // Returns true when the command should end.
