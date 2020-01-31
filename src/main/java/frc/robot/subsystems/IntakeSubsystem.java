@@ -7,7 +7,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,29 +16,47 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase 
 {
-  private final WPI_VictorSPX m_IntakeSpin;
+  private final VictorSPX m_IntakeSpin;
   private final DoubleSolenoid m_Deploy;
 
   public IntakeSubsystem() 
   {
-      m_IntakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
+      m_IntakeSpin = new VictorSPX(Constants.kIntakeTalonAdress);
       m_Deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
+      m_IntakeSpin.set(ControlMode.PercentOutput, 0.0);
   }
 
   /**
-   * Stop intake motors and lift intake system
+   * Lift intake system.
    */
-  public void LiftIntake()
+  public void LiftIntakeSystem()
   {
-      
+      m_Deploy.set(DoubleSolenoid.Value.kReverse);
+
   }
 
   /**
-   * Pulls down intake system and starts intake motors.
+   * Pulls down intake system.
    */
-  public void DeployIntake()
+  public void DeployIntakeSystem()
   {
+      m_Deploy.set(DoubleSolenoid.Value.kForward);
+  }
 
+  /**
+   * Start spin intake motor with current assigned speed.
+   */
+  public void StartIntakeMotor(double MotorSpeed)
+  {
+      m_IntakeSpin.set(ControlMode.PercentOutput, MotorSpeed);
+  }
+
+  /**
+   * Force stop intake motor.
+   */
+  public void StopIntakeMotor()
+  {
+      m_IntakeSpin.set(ControlMode.PercentOutput, 0.0);
   }
 
   @Override
