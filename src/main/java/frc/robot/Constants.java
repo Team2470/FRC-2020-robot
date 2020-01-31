@@ -30,7 +30,7 @@ public final class Constants {
     // CAN
     public static final int kIntakeTalonAdress = 4;
     public static final int kSolenoidUp = 4;
-    public static final int kSolenoidDown = 4;
+    public static final int kSolenoidDown = 5;
 
 
 }
