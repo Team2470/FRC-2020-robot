@@ -28,9 +28,9 @@ public final class Constants {
     public static final boolean kShooterInverted = false;
 
     // CAN
-    public static final int kIntakeTalonAdress = 100;
-    public static final int kSolenoidUp = 100;
-    public static final int kSolenoidDown = 100;
+    public static final int kIntakeTalonAdress = 4;
+    public static final int kSolenoidUp = 4;
+    public static final int kSolenoidDown = 4;
 
 
 }
