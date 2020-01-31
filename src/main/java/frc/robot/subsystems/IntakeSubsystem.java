@@ -7,18 +7,42 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-public class IntakeSubsystem extends SubsystemBase {
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class IntakeSubsystem extends SubsystemBase 
+{
+  private final WPI_VictorSPX m_IntakeSpin;
+  private final DoubleSolenoid m_Deploy;
+
+  public IntakeSubsystem() 
+  {
+      m_IntakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
+      m_Deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
+  }
+
   /**
-   * Creates a new IntakeSubsystem.
+   * Stop intake motors and lift intake system
    */
-  public IntakeSubsystem() {
+  public void LiftIntake()
+  {
+      
+  }
+
+  /**
+   * Pulls down intake system and starts intake motors.
+   */
+  public void DeployIntake()
+  {
 
   }
 
   @Override
-  public void periodic() {
+  public void periodic() 
+  {
     // This method will be called once per scheduler run
   }
 }
