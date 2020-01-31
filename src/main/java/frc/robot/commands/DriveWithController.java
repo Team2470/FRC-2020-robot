@@ -7,23 +7,27 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
+import frc.robot.Constants;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveWithController extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drive m_drive;
-  private final XboxController m_controller;
+  private final DriveSubsystem m_drive;
+  private final XboxController m_xboxController;
+  private final Joystick m_buttonController;
   
   /**
    * Creates a new DriveWithController.
    */
-  public DriveWithController(Drive drive, XboxController controller) {
+  public DriveWithController(DriveSubsystem drive, XboxController xboxController, Joystick buttonController) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
-    m_controller = controller;
+    m_xboxController = xboxController;
+    m_buttonController = buttonController;
 
     addRequirements(m_drive);
   }
@@ -37,14 +41,15 @@ public class DriveWithController extends CommandBase {
   @Override
   public void execute() {
     // Get data from the controller
-    double move = m_controller.getY(Hand.kLeft);
-    double rotate = m_controller.getX(Hand.kRight);
+    double move = m_xboxController.getY(Hand.kLeft);
+    double rotate = m_xboxController.getX(Hand.kRight);
 
     // Process the data
     move = -move;
 
     // Tell the drive subsystem
     m_drive.arcadeDrive(move, rotate);
+    m_drive.setGear(m_buttonController.getRawButton(Constants.kSwitchArcadeRight));
 
   }
 

@@ -18,14 +18,25 @@ package frc.robot;
 public final class Constants {
 
     // Controllers
-    public static final int kControllerDriver = 0;
+    public static final int kControllerDriver     = 0; // XBox Controller
+    public static final int kLeftButtonController = 3; // Left button hub on Driver Station
+    
+    // Buttons
+    public static final int kSwitchArcadeRight = 5; // Right arcade locking switch
+
+    // CAN IDs
+    public static final int kDriveTalonRightAId = 0;
+    public static final int kDriveTalonRightBId = 1;
+    public static final int kDriveTalonLeftAId  = 2;
+    public static final int kDriveTalonLeftBId  = 3;
+
+    // PCM / Pneumatics Control Module
+    public static final int kGearShiftSolenoidId = 0; // Channel 0
 
     // PWM
-    public static final int kDriveSparkRight     = 0;
-    public static final int kDriveSparkLeft      = 9;
-
     public static final int kShooterTalon        = 1;
     public static final boolean kShooterInverted = false;
+
 
 
 }

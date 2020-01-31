@@ -8,11 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.TestShooterCommand;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,12 +27,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drive m_drive = new Drive();
+  private final DriveSubsystem m_drive = new DriveSubsystem();
   private final Shooter m_shooter = new Shooter();
   private final FakeSubsystem m_fake = new FakeSubsystem();
 
-  private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
-
+  private final XboxController m_xboxController = new XboxController(Constants.kControllerDriver);
+  private final Joystick m_leftController = new Joystick(Constants.kSwitchArcadeRight);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -40,7 +41,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Set default commands
-    m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
+    m_drive.setDefaultCommand(new DriveWithController(m_drive, m_xboxController, m_leftController));
   }
 
   /**
@@ -54,17 +55,17 @@ public class RobotContainer {
     // Configure out shooter buttons
     TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
 
-    new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
-    new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
+    new JoystickButton(m_xboxController, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
+    new JoystickButton(m_xboxController, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
 
     // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kA.value)
+    new JoystickButton(m_xboxController, Button.kA.value)
         .whenPressed(() -> m_fake.setRandomNumber())
         .whenReleased(() -> m_fake.stopRandomNumber());
 
     // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kB.value)
+    new JoystickButton(m_xboxController, Button.kB.value)
         .whenPressed(() -> m_fake.setState("B Pressed"))
         .whenReleased(() -> m_fake.setState(""));
   }
