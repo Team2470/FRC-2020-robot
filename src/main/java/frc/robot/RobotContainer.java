@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithController;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,7 +26,8 @@ public class RobotContainer {
   private final DriveSubsystem m_drive = new DriveSubsystem();
 
   private final XboxController m_xboxController = new XboxController(Constants.kControllerDriver);
-  private final Joystick m_leftController = new Joystick(Constants.kSwitchArcadeRight);
+  private final Joystick m_leftController = new Joystick(Constants.kLeftButtonController);
+  private final JoystickButton m_gearShift = new JoystickButton(m_leftController, Constants.kSwitchArcadeRight);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -34,7 +36,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Set default commands
-    m_drive.setDefaultCommand(new DriveWithController(m_drive, m_xboxController, m_leftController));
+    m_drive.setDefaultCommand(new DriveWithController(m_drive, m_xboxController, m_gearShift));
   }
 
   /**

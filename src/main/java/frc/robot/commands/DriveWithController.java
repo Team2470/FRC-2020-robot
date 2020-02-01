@@ -7,27 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveWithController extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveSubsystem m_drive;
   private final XboxController m_xboxController;
-  private final Joystick m_buttonController;
+  private final JoystickButton m_gearSwitch;
   
   /**
    * Creates a new DriveWithController.
+   * @param drive Drive subsystem to control
+   * @param xboxController xboxController controller to use for driving
+   * @param gearSwitchButton JoystickButton to use for gear shift
    */
-  public DriveWithController(DriveSubsystem drive, XboxController xboxController, Joystick buttonController) {
+  public DriveWithController(DriveSubsystem drive, XboxController xboxController, JoystickButton gearSwitchButton) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     m_xboxController = xboxController;
-    m_buttonController = buttonController;
+    m_gearSwitch = gearSwitchButton;
 
     addRequirements(m_drive);
   }
@@ -49,7 +51,7 @@ public class DriveWithController extends CommandBase {
 
     // Tell the drive subsystem
     m_drive.arcadeDrive(move, rotate);
-    m_drive.setGear(m_buttonController.getRawButton(Constants.kSwitchArcadeRight));
+    m_drive.setGear(m_gearSwitch.get());
 
   }
 
