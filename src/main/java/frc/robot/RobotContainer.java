@@ -30,7 +30,7 @@ public class RobotContainer {
   private final Drive m_drive = new Drive();
   private final Shooter m_shooter = new Shooter();
   private final FakeSubsystem m_fake = new FakeSubsystem();
-  private final IntakeSubsystem m_Intake = new IntakeSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
   /**
