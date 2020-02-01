@@ -10,17 +10,19 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import bjorg.sim.WPI_CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
   // the flywheel motor
-  private final CANSparkMax m_shooterMaster;
-  private final CANSparkMax m_shooterSlave;
+  private final WPI_CANSparkMax m_shooterMaster;
+  private final WPI_CANSparkMax m_shooterSlave;
 
   // controls the angle of hood
-  private final CANSparkMax m_shooterAngleMotor;
+  private final WPI_CANSparkMax m_shooterAngleMotor;
 
   private final CANEncoder m_shooterAngleEncoder;
 
@@ -31,18 +33,24 @@ public class Shooter extends SubsystemBase {
    * Creates a new Shooter.
    */
   public Shooter() {
-    m_shooterMaster = new CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
+    setName("Shooter");
+    
+    m_shooterMaster = new WPI_CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
     m_shooterMaster.setInverted(Constants.kShooterInverted);
+    addChild("Shooter Master", m_shooterMaster);
 
-    m_shooterSlave = new CANSparkMax(Constants.kShooterNeoSlave, MotorType.kBrushless);
+    m_shooterSlave = new WPI_CANSparkMax(Constants.kShooterNeoSlave, MotorType.kBrushless);
     m_shooterSlave.follow(m_shooterMaster, true);
+    addChild("Shooter Slave", m_shooterSlave);
 
-    m_shooterAngleMotor = new CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
+    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
+    addChild("Shooter Angle Motor", m_shooterAngleMotor);
     
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
     m_shooterAngleEncoder.setPositionConversionFactor(Constants.kShooterAngleScale);
     //42 counts per revolution
+    //addChild("Shooter Angle Encoder", m_shooterAngleEncoder);
     
   }
 
