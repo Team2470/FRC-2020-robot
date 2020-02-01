@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,6 +15,7 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
 
+  private final Encoder m_climbEncoder;
   private final Talon m_winchMotor;
 
   Solenoid climberSolenoid = new Solenoid(0);
@@ -22,7 +24,8 @@ public class Climber extends SubsystemBase {
    */
   public Climber() {
 
-    m_winchMotor = new Talon(Constants.kWinchMotor);
+    m_winchMotor    = new Talon(Constants.kWinchMotor);
+    m_climbEncoder  = new Encoder(1,0);
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,15 +35,12 @@ public class Climber extends SubsystemBase {
 
     m_winchMotor.setSpeed(speed);
 
-    /* 
-    for(end != true){
-      if(targetDist >= encoderReading){
-        sleep(50);
-      }else if(targetDist < encoderReading){
-        end == true;
+    while(end != true ){
+      if (targetDist < m_climbEncoder.getDistance()) {
+        end = true;
       }
     }
-    */
+    
 
     m_winchMotor.stopMotor();
 
