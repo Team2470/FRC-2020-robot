@@ -24,8 +24,21 @@ public final class Constants {
     public static final int kDriveSparkRight     = 0;
     public static final int kDriveSparkLeft      = 9;
 
-    public static final int kShooterTalon        = 1;
+    public static final int kShooterNeoMaster        = 1;
+    public static final int kShooterNeoSlave = 2;
     public static final boolean kShooterInverted = false;
+
+    public static final int kShooterNeoAngle = 3;
+    public static final boolean kShooterAngleInverted = false;
+
+    public static final int kLowLimitSwitch = 0;
+
+    /**
+     * TO DO:
+     * determine cureent threshold boiiiiiiii for calibration of hood position
+     */
+    public static final double kCurrentThreshold = 0.5;
+
 
 
 }
