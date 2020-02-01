@@ -27,6 +27,8 @@ public final class Constants {
     public static final int kShooterTalon        = 1;
     public static final boolean kShooterInverted = false;
 
+    public static final int kWinchMotor          = 0;
+
 
 }
 
