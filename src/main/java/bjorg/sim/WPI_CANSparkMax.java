@@ -17,18 +17,16 @@ import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 
 import com.revrobotics.CANSparkMax;
 
 
-public class WPI_CANSparkMax extends CANSparkMax implements SpeedController, Sendable {
+public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
 
     // Simulator variables
     private String _description;
-    private double _speed;
 
     private SimDevice m_simDevice;
     private SimDouble m_simSpeed;
@@ -65,7 +63,6 @@ public class WPI_CANSparkMax extends CANSparkMax implements SpeedController, Sen
 	 */
     @Override
     public void set(double speed) {
-        _speed = speed;
         super.set(speed);
         simSet(speed);
     }
