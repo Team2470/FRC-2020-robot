@@ -26,6 +26,7 @@ public class IntakeSubsystem extends SubsystemBase
       m_deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
       m_intakeSpin.set(ControlMode.PercentOutput, 0.0);
       m_intakeSpin.setNeutralMode(NeutralMode.Coast);
+      m_intakeSpin.setInverted(Constants.kIntakeInverted);
   }
 
   /**
@@ -47,6 +48,7 @@ public class IntakeSubsystem extends SubsystemBase
 
   /**
    * Start spin intake motor with current assigned speed.
+   *@param MotorSpeed Posistive values move balls into the robot
    */
   public void startIntakeMotor(double MotorSpeed)
   {
