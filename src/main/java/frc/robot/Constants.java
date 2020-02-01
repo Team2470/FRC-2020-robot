@@ -31,13 +31,15 @@ public final class Constants {
     public static final int kShooterNeoAngle = 3;
     public static final boolean kShooterAngleInverted = false;
 
-    public static final int kLowLimitSwitch = 0;
-
     /**
      * TO DO:
      * determine cureent threshold boiiiiiiii for calibration of hood position
      */
     public static final double kCurrentThreshold = 0.5;
+
+    //conversion factor of the hood angler. The first number is the gear ratio
+    //The second number is degrees over count per rev
+    public final static double kShooterAngleScale = ((1/125)*(360/42));
 
 
 

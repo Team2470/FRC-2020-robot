@@ -10,17 +10,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  /**
-   * TO DO:
-   * Determine conversion factor for angle of shooter.
-   */
-  private final static double kShooterAngleScale = 1.0;
 
   // the flywheel motor
   private final CANSparkMax m_shooterMaster;
@@ -30,8 +23,6 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterAngleMotor;
 
   private final CANEncoder m_shooterAngleEncoder;
-
-  private final DigitalInput m_shooterAngleLimitSwitch;
 
   double currentList[] = new double[5];
   int positionInList = 0;
@@ -50,10 +41,8 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
     
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
-    m_shooterAngleEncoder.setPositionConversionFactor(kShooterAngleScale);
-
-    m_shooterAngleLimitSwitch = new DigitalInput(Constants.kLowLimitSwitch);
-
+    m_shooterAngleEncoder.setPositionConversionFactor(Constants.kShooterAngleScale);
+    //42 counts per revolution
     
   }
 
@@ -66,7 +55,13 @@ public class Shooter extends SubsystemBase {
     m_shooterMaster.set(percentOutput);
   }
 
-  public void setAngleMotor(double percentOutput){
+  public void setAngleMotorDegrees() {
+    /**
+     * TODO determine how to set angle.
+     */
+  }
+
+  public void setAngleMotorSpeed(double percentOutput){
     m_shooterAngleMotor.set(percentOutput);
   }
 /**
