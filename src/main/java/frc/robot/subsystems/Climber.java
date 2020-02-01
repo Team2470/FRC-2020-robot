@@ -30,25 +30,14 @@ public class Climber extends SubsystemBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
   //targetDist should not be max possible distance to account for sample time
-  public void climb(double speed, double targetDist){
-    boolean end = false;
-
+  public void climb(int speed){
     m_winchMotor.setSpeed(speed);
-
-    while(end != true ){
-      if (targetDist < m_climbEncoder.getDistance()) {
-        end = true;
-      }
-    }
-    
-
-    m_winchMotor.stopMotor();
-
   }
- 
-  // Returns true when the command should end.
- // @Override
-  //public boolean isFinished() {
-   // return false;
- // }
+
+  public double getDistance(){
+
+    double distance = m_climbEncoder.getDistance();
+    return distance;
+  }
+
 }
