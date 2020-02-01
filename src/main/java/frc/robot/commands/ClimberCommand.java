@@ -5,25 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class Climber extends CommandBase {
+public class ClimberCommand extends CommandBase {
 
   Solenoid climberSolenoid = new Solenoid(0);
 
-  /**
-   * Creates a new climberSubsystem
-   */
-  public Climber() {
 
+  /**
+   * Creates a new ClimberCommand.
+   */
+  public ClimberCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
- 
- 
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    //deploy solenoid to contain climber arm
+    climberSolenoid.set(true);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    //retract solenoid to allow spring to deploy climber
+    climberSolenoid.set(false);
+  }
+
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
