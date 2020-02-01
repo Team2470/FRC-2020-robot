@@ -8,10 +8,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import bjorg.sim.WPI_CANSparkMax;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,12 +31,22 @@ public class Shooter extends SubsystemBase {
   double currentList[] = new double[5];
   int positionInList = 0;
 
+  //Hood PID
+  private final CANPIDController m_hoodPID;
+  private final static double kHoodP = 0.0;
+  private final static double kHoodI = 0.0;
+  private final static double kHoodD = 0.0;
+  private final static double kHoodIz = 0.0;
+  private final static double kHoodFF = 0.0;
+
+  //TODO Flywheel PID
+
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
     setName("Shooter");
-    
+
     m_shooterMaster = new WPI_CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
     m_shooterMaster.setInverted(Constants.kShooterInverted);
     addChild("Shooter Master", m_shooterMaster);
@@ -51,12 +63,20 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleEncoder.setPositionConversionFactor(Constants.kShooterAngleScale);
     //42 counts per revolution
     //addChild("Shooter Angle Encoder", m_shooterAngleEncoder);
+
+    m_hoodPID = new CANPIDController(m_shooterAngleMotor);
+
+    //set PID coefficeintsnt4b
+    m_hoodPID.setP(kHoodP);
+    m_hoodPID.setI(kHoodI);
+    m_hoodPID.setD(kHoodD);
+    m_hoodPID.setIZone(kHoodIz);
+    m_hoodPID.setFF(kHoodFF);
     
   }
 
   /**
    * Start the shooter motor spinning
-   * 
    * @param percentOutput Motor Speed [ -1.0 to 1.0 ] - Positive Numbers Shoot
    */
   public void shoot(double percentOutput) {
@@ -65,8 +85,10 @@ public class Shooter extends SubsystemBase {
 
   public void setAngleMotorDegrees() {
     /**
-     * TODO determine how to set angle.
+     * TODO finish PID and add reference point
+     * 
      */
+
   }
 
   public void setAngleMotorSpeed(double percentOutput){
@@ -74,10 +96,6 @@ public class Shooter extends SubsystemBase {
   }
 /**
  * Determines whether hood is at home position
- * TO DO:
- * Determine rest current
- * @param restCurrent D
- * @return
  */
   public boolean isHoodPosition(){
     //calculates the average
