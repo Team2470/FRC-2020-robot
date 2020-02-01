@@ -10,14 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveWithController;
-import frc.robot.commands.TestShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FakeSubsystem;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,8 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final Shooter m_shooter = new Shooter();
-  private final FakeSubsystem m_fake = new FakeSubsystem();
 
   private final XboxController m_xboxController = new XboxController(Constants.kControllerDriver);
   private final Joystick m_leftController = new Joystick(Constants.kSwitchArcadeRight);
@@ -52,22 +45,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Configure out shooter buttons
-    TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
-
-    new JoystickButton(m_xboxController, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
-    new JoystickButton(m_xboxController, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
-
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_xboxController, Button.kA.value)
-        .whenPressed(() -> m_fake.setRandomNumber())
-        .whenReleased(() -> m_fake.stopRandomNumber());
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_xboxController, Button.kB.value)
-        .whenPressed(() -> m_fake.setState("B Pressed"))
-        .whenReleased(() -> m_fake.setState(""));
   }
 
 
