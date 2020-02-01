@@ -7,10 +7,15 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import frc.robot.commands.shooter.Calibrate;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.subsystems.Drive;
@@ -40,6 +45,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    // Add Commands to Screen
+    configureTestingCommands();
+
     // Set default commands
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
   }
@@ -68,6 +76,20 @@ public class RobotContainer {
     new JoystickButton(m_controller, Button.kB.value)
         .whenPressed(() -> m_fake.setState("B Pressed"))
         .whenReleased(() -> m_fake.setState(""));
+  }
+
+  /**
+   * Add commands to shuffleboard here.  This is so you don't have to add 
+   * them yourselves
+   */
+  private void configureTestingCommands() {
+    ShuffleboardLayout shootCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Shooter", BuiltInLayouts.kList)
+      .withSize(2,2)
+      .withPosition(0,0)
+      .withProperties(Map.of("Label position", "HIDDEN"));
+
+      shootCommands.add(new Calibrate(m_shooter));
   }
 
 

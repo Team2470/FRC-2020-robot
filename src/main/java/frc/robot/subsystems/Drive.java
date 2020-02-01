@@ -25,8 +25,11 @@ public class Drive extends SubsystemBase {
    * Creates a new Drive.
    */
   public Drive() {
+    setName("Drive");
+
     m_leftMotor = new Spark(Constants.kDriveSparkLeft);
     m_rightMotor = new Spark(Constants.kDriveSparkRight);
+    addChild("Left", m_leftMotor);
 
     m_drive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   }
