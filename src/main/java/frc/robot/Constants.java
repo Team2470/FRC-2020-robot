@@ -31,11 +31,20 @@ public final class Constants {
 
     // CAN
     public static final int kIntakeTalonAdress = 4;
+    public static final boolean kIntakeInverted = false;
     public static final int kSolenoidUp = 4;
     public static final int kSolenoidDown = 5;
+    public static final int kStorageMotorTalonID = 1;
+    public static final boolean kStorageMotorInverted = false;
+    public static final int kStorageOutputVictorID = 2;
+    public static final boolean kStorageOutputInverted = false;
 
     //Intake
     public static final double kIntakeCaptureSpeed = 0.5;
+
+    //DigitalIO
+    public static final int kStorageBallInputChannel = 0;
+    public static final int kStorageBallOutputChannel = 1;
 
 
 }
