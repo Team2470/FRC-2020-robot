@@ -30,15 +30,18 @@ public class DriveSubsystem extends SubsystemBase {
    * Creates a new DriveSubsystem.
    */
   public DriveSubsystem() {
+    setName("Drive");
     // m_leftMotorController = new Spark(Constants.kDriveSparkLeft);
     // m_rightMotorController = new Spark(Constants.kDriveSparkRight);
     // Motor Controllers
     m_leftMaster = new WPI_TalonFX(Constants.kDriveTalonLeftAId);
     m_leftSlave = new WPI_TalonFX(Constants.kDriveTalonLeftBId);
     m_leftSlave.follow(m_leftMaster);
+    addChild("Left Talon", m_leftMaster);
     m_rightMaster = new WPI_TalonFX(Constants.kDriveTalonRightAId);
     m_rightSlave = new WPI_TalonFX(Constants.kDriveTalonRightBId);
     m_rightSlave.follow(m_rightMaster);
+    addChild("Right Talon", m_rightMaster);
     m_diffDriveController = new DifferentialDrive(m_leftMaster, m_rightMaster);
 
     // Solenoid
