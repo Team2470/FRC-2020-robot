@@ -9,8 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,8 +19,8 @@ import frc.robot.Constants;
 
 public class StorageSubsystem extends SubsystemBase {
 
-  private final TalonSRX m_conveyorMotor;
-  private final VictorSPX m_outputMotor;
+  private final WPI_TalonSRX m_conveyorMotor;
+  private final WPI_VictorSPX m_outputMotor;
   private final DigitalInput m_ballAtInput;  
   private final DigitalInput m_ballAtOutput;
 
@@ -29,13 +29,19 @@ public class StorageSubsystem extends SubsystemBase {
    * Creates a new StorageSubsystem.
    */
   public StorageSubsystem() {
+    setName("Storage");
     m_ballAtInput = new DigitalInput(Constants.kStorageBallInputChannel);
     m_ballAtOutput = new DigitalInput(Constants.kStorageBallOutputChannel);
+    addChild("Ball At Input", m_ballAtInput);
+    addChild("Ball At Output", m_ballAtOutput);
     
-    m_conveyorMotor = new TalonSRX(Constants.kStorageMotorTalonID);
+    m_conveyorMotor = new WPI_TalonSRX(Constants.kStorageMotorTalonID);
     m_conveyorMotor.setInverted(Constants.kStorageMotorInverted);
-    m_outputMotor = new VictorSPX(Constants.kStorageOutputVictorID);
+    addChild("Conveyor Motor", m_conveyorMotor);
+
+    m_outputMotor = new WPI_VictorSPX(Constants.kStorageOutputVictorID);
     m_outputMotor.setInverted(Constants.kStorageOutputInverted);
+    addChild("Output Motor", m_outputMotor);
   }
 
   public void setCoveyorMotor(double MotorSpeed) 

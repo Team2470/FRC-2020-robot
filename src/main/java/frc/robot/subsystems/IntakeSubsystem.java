@@ -22,8 +22,11 @@ public class IntakeSubsystem extends SubsystemBase
 
   public IntakeSubsystem() 
   {
+    setName("Intake");
       m_intakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
+      addChild("Intake Motor", m_intakeSpin);
       m_deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
+      addChild("Intake Deploy Solenoid", m_deploy);
       m_intakeSpin.set(ControlMode.PercentOutput, 0.0);
       m_intakeSpin.setNeutralMode(NeutralMode.Coast);
       m_intakeSpin.setInverted(Constants.kIntakeInverted);
