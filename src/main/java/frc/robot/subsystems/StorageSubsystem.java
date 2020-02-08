@@ -65,6 +65,8 @@ public class StorageSubsystem extends SubsystemBase {
   public void stopMotors() {
     m_conveyorMotor.setNeutralMode(NeutralMode.Coast);
     m_outputMotor.setNeutralMode(NeutralMode.Coast);
+    m_conveyorMotor.stopMotor();
+    m_outputMotor.stopMotor();
   }
  
   @Override

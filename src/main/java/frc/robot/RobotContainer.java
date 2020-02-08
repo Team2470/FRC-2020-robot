@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.commands.DriveWithController;
+import frc.robot.commands.LoadConveyorCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
@@ -87,14 +88,18 @@ public class RobotContainer {
    * them yourselves
    */
   private void configureTestingCommands() {
-    ShuffleboardLayout shootCommands = Shuffleboard.getTab("Commands")
-      .getLayout("Shooter", BuiltInLayouts.kList)
+    ShuffleboardLayout storageCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Storage", BuiltInLayouts.kList)
       .withSize(2,2)
       .withPosition(0,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
 
-      shootCommands.add(new TestStorageBackwardCommand(m_storage));
-      shootCommands.add(new TestStorageForwardCommand(m_storage));
+
+      storageCommands.add(new TestStorageBackwardCommand(m_storage));
+      storageCommands.add(new TestStorageForwardCommand(m_storage));
+      storageCommands.add(new LoadConveyorCommand(m_storage));
+      storageCommands.add(m_storage);
+
   }
 
 
