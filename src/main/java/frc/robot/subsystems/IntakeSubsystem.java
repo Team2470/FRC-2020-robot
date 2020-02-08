@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,12 +17,12 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase 
 {
-  private final VictorSPX m_intakeSpin;
+  private final WPI_VictorSPX m_intakeSpin;
   private final DoubleSolenoid m_deploy;
 
   public IntakeSubsystem() 
   {
-      m_intakeSpin = new VictorSPX(Constants.kIntakeTalonAdress);
+      m_intakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
       m_deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
       m_intakeSpin.set(ControlMode.PercentOutput, 0.0);
       m_intakeSpin.setNeutralMode(NeutralMode.Coast);
