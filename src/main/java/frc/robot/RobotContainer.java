@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.TestShooterCommand;
+import frc.robot.commands.ClimberCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FakeSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -29,6 +31,7 @@ public class RobotContainer {
   private final Drive m_drive = new Drive();
   private final Shooter m_shooter = new Shooter();
   private final FakeSubsystem m_fake = new FakeSubsystem();
+  private final Climber m_climber = new Climber();
 
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
