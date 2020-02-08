@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class StorageSubsysten extends SubsystemBase {
+public class StorageSubsystem extends SubsystemBase {
 
   private final TalonSRX m_conveyorMotor;
   private final VictorSPX m_outputMotor;
@@ -28,7 +28,7 @@ public class StorageSubsysten extends SubsystemBase {
   /**
    * Creates a new StorageSubsystem.
    */
-  public StorageSubsysten() {
+  public StorageSubsystem() {
     m_ballAtInput = new DigitalInput(Constants.kStorageBallInputChannel);
     m_ballAtOutput = new DigitalInput(Constants.kStorageBallOutputChannel);
     
