@@ -29,6 +29,7 @@ public final class Constants {
     public static final int kShooterTalon        = 1;
     public static final boolean kShooterInverted = false;
 
+
     // CAN
     public static final int kIntakeTalonAdress = 4;
     public static final boolean kIntakeInverted = false;
@@ -45,6 +46,10 @@ public final class Constants {
     //DigitalIO
     public static final int kStorageBallInputChannel = 0;
     public static final int kStorageBallOutputChannel = 1;
+
+    public static final int kWinchMotor          = 0;
+    public static final double kTargetDistance   = 5;
+
 
 
 }
