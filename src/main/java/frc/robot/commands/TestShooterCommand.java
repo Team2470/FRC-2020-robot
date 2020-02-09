@@ -29,6 +29,7 @@ public class TestShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putNumber("Shooter Output", 0.0);
+    SmartDashboard.putNumber("Shooter Exit Output", 0.0);
     
   }
 
@@ -37,6 +38,9 @@ public class TestShooterCommand extends CommandBase {
   public void execute() {
     double speed = SmartDashboard.getNumber("Shooter Output", 0.0);
     m_shooter.shoot(speed);
+
+    double exitSpeed = SmartDashboard.getNumber("Shooter Exit Output", 0.0);
+    m_shooter.moveExitMotor(exitSpeed);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +48,7 @@ public class TestShooterCommand extends CommandBase {
   public void end(boolean interrupted) {
     m_shooter.stop();
     SmartDashboard.putNumber("Shooter Output", 0.0);
+    SmartDashboard.putNumber("Shooter Exit Output", 0.0);
   }
 
   // Returns true when the command should end.
