@@ -72,8 +72,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Configure out shooter buttons
-    TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
-    SmartDashboard.putData("Test Shooter", m_testShooterCmd);
+    // TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
     //new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
     //new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
@@ -109,11 +108,19 @@ public class RobotContainer {
     ShuffleboardLayout intakeCommands = Shuffleboard.getTab("Commands")
       .getLayout("Intake", BuiltInLayouts.kList)
       .withSize(2,2)
-      .withPosition(0,0)
+      .withPosition(2,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
     intakeCommands.add(new IntakeDeployCommand(m_intake));
     intakeCommands.add(new IntakeRetractCommand(m_intake));
     intakeCommands.add(m_intake);
+
+    ShuffleboardLayout shooterCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Shooter", BuiltInLayouts.kList)
+      .withSize(2,2)
+      .withPosition(4,0)
+      .withProperties(Map.of("Label position", "HIDDEN"));
+    shooterCommands.add(new TestShooterCommand(m_shooter));
+    shooterCommands.add(m_shooter);
   }
 
 
