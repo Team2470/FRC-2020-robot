@@ -29,6 +29,7 @@ public class TestShooterCommand extends CommandBase {
   @Override
   public void initialize() {
     SmartDashboard.putNumber("Shooter Output", 0.0);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

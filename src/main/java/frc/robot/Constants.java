@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -26,8 +24,6 @@ public final class Constants {
     // TODO: There should not be any PWM motors
     public static final int kDriveSparkRight     = 0;
     public static final int kDriveSparkLeft      = 9;
-    public static final int kShooterTalon        = 1;
-    public static final boolean kShooterInverted = false;
     public static final int kWinchMotor          = 2;
 
 
@@ -36,6 +32,13 @@ public final class Constants {
     public static final boolean kIntakeInverted = false;
     public static final int kStorageMotorTalonID = 20;
     public static final boolean kStorageMotorInverted = true;
+
+    public static final int kShooterNeoMaster   = 3;
+    public static final int kShooterNeoSlave = 1;
+    public static final boolean kShooterInverted = true;
+    public static final int kShooterNeoAngle = 2;
+    public static final boolean kShooterAngleInverted = false;
+	public static int kShooterNeoExit = 4 ;
     // public static final int kStorageOutputVictorID = 2;
     // public static final boolean kStorageOutputInverted = false;
 
@@ -44,6 +47,16 @@ public final class Constants {
     public static final int kIntakeSolenoidRight = 1;
     public static final int kClimberSolenoid = 3;
 
+    // Shooter
+    /**
+     * TO DO:
+     * determine cureent threshold boiiiiiiii for calibration of hood position
+     */
+    public static final double kCurrentThreshold = 0.5;
+
+    //conversion factor of the hood angler. The first number is the gear ratio
+    //The second number is degrees over count per rev
+    public final static double kShooterAngleScale = ((1/125)*(360/42));
 
     //Intake
     public static final double kIntakeCaptureSpeed = 0.5;

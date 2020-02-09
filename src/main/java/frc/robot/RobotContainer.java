@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.IntakeRetractCommand;
@@ -22,7 +23,6 @@ import frc.robot.commands.LoadConveyorCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
-import frc.robot.commands.ClimberCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -73,9 +73,9 @@ public class RobotContainer {
 
     // Configure out shooter buttons
     TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
-
-    new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
-    new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
+    SmartDashboard.putData("Test Shooter", m_testShooterCmd);
+    //new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
+    //new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
 
     // Set a random number when pressed, set to 0 when released
