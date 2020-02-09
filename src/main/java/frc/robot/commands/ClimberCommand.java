@@ -13,6 +13,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
 public class ClimberCommand extends CommandBase {
+  public static final double kTargetDistance = 5;
 
   Solenoid climberSolenoid = new Solenoid(0);
   private final Climber m_climber;
@@ -51,7 +52,7 @@ public class ClimberCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climber.getDistance()>= Constants.kTargetDistance){
+    if(m_climber.getDistance()>= kTargetDistance){
       return true;
     }else{
     return false;

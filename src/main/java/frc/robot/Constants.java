@@ -23,22 +23,27 @@ public final class Constants {
     public static final int kControllerDriver = 0;
 
     // PWM
+    // TODO: There should not be any PWM motors
     public static final int kDriveSparkRight     = 0;
     public static final int kDriveSparkLeft      = 9;
-
     public static final int kShooterTalon        = 1;
     public static final boolean kShooterInverted = false;
+    public static final int kWinchMotor          = 2;
 
 
     // CAN
-    public static final int kIntakeTalonAdress = 4;
+    public static final int kIntakeTalonAdress = 22;
     public static final boolean kIntakeInverted = false;
-    public static final int kSolenoidUp = 4;
-    public static final int kSolenoidDown = 5;
-    public static final int kStorageMotorTalonID = 1;
-    public static final boolean kStorageMotorInverted = false;
-    public static final int kStorageOutputVictorID = 2;
-    public static final boolean kStorageOutputInverted = false;
+    public static final int kStorageMotorTalonID = 20;
+    public static final boolean kStorageMotorInverted = true;
+    // public static final int kStorageOutputVictorID = 2;
+    // public static final boolean kStorageOutputInverted = false;
+
+    // PCM (Id 0)
+    public static final int kIntakeSolenoidLeft = 0;
+    public static final int kIntakeSolenoidRight = 1;
+    public static final int kClimberSolenoid = 3;
+
 
     //Intake
     public static final double kIntakeCaptureSpeed = 0.5;
@@ -46,11 +51,8 @@ public final class Constants {
     //DigitalIO
     public static final int kStorageBallInputChannel = 0;
     public static final int kStorageBallOutputChannel = 1;
-
-    public static final int kWinchMotor          = 0;
-    public static final double kTargetDistance   = 5;
-
-
-
+    public static final int kClimerEncoderChannelA = 2;
+    public static final int kClimerEncoderChannelB = 3;
+    
 }
 

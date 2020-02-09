@@ -12,24 +12,30 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase 
 {
   private final WPI_VictorSPX m_intakeSpin;
-  private final DoubleSolenoid m_deploy;
+  private final Solenoid m_deployLeft;
+  private final Solenoid m_deployRight;
 
   public IntakeSubsystem() 
   {
     setName("Intake");
-      m_intakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
-      addChild("Intake Motor", m_intakeSpin);
-      m_deploy = new DoubleSolenoid(Constants.kSolenoidUp, Constants.kSolenoidDown);
-      addChild("Intake Deploy Solenoid", m_deploy);
-      m_intakeSpin.set(ControlMode.PercentOutput, 0.0);
-      m_intakeSpin.setNeutralMode(NeutralMode.Coast);
-      m_intakeSpin.setInverted(Constants.kIntakeInverted);
+
+    m_deployLeft = new Solenoid(Constants.kIntakeSolenoidLeft);
+    addChild("Intake Deploy Left Solenoid", m_deployLeft);
+    m_deployRight = new Solenoid(Constants.kIntakeSolenoidRight);
+    addChild("Intake Deploy Right Solenoid", m_deployRight);
+
+    m_intakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonAdress);
+    addChild("Intake Motor", m_intakeSpin);
+    m_intakeSpin.set(ControlMode.PercentOutput, 0.0);
+    m_intakeSpin.setNeutralMode(NeutralMode.Coast);
+    m_intakeSpin.setInverted(Constants.kIntakeInverted);
   }
 
   /**
@@ -37,7 +43,8 @@ public class IntakeSubsystem extends SubsystemBase
    */
   public void liftIntake()
   {
-      m_deploy.set(DoubleSolenoid.Value.kReverse);
+      m_deployLeft.set(false);
+      m_deployRight.set(false);
 
   }
 
@@ -46,7 +53,8 @@ public class IntakeSubsystem extends SubsystemBase
    */
   public void deployIntake()
   {
-      m_deploy.set(DoubleSolenoid.Value.kForward);
+      m_deployLeft.set(true);
+      m_deployRight.set(true);
   }
 
   /**

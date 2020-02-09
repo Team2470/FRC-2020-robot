@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.commands.DriveWithController;
+import frc.robot.commands.IntakeDeployCommand;
+import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.LoadConveyorCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
@@ -104,6 +106,14 @@ public class RobotContainer {
       storageCommands.add(new LoadConveyorCommand(m_storage));
       storageCommands.add(m_storage);
 
+    ShuffleboardLayout intakeCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Intake", BuiltInLayouts.kList)
+      .withSize(2,2)
+      .withPosition(0,0)
+      .withProperties(Map.of("Label position", "HIDDEN"));
+    intakeCommands.add(new IntakeDeployCommand(m_intake));
+    intakeCommands.add(new IntakeRetractCommand(m_intake));
+    intakeCommands.add(m_intake);
   }
 
 
