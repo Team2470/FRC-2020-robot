@@ -54,9 +54,9 @@ public class RobotContainer {
 
     // Configure out shooter buttons
     TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
-
-    new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
-    new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
+    SmartDashboard.putData("Test Shooter", m_testShooterCmd);
+    //new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
+    //new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
 
     // Set a random number when pressed, set to 0 when released

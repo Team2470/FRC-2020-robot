@@ -24,11 +24,12 @@ public final class Constants {
     public static final int kDriveSparkRight     = 0;
     public static final int kDriveSparkLeft      = 9;
 
-    public static final int kShooterNeoMaster        = 1;
-    public static final int kShooterNeoSlave = 2;
-    public static final boolean kShooterInverted = false;
-
-    public static final int kShooterNeoAngle = 3;
+    public static final int kShooterNeoMaster   = 3;
+    public static final int kShooterNeoSlave = 1;
+    public static final boolean kShooterInverted = true;
+    
+    //hood PWM
+    public static final int kShooterNeoAngle = 2;
     public static final boolean kShooterAngleInverted = false;
 
     /**
@@ -41,6 +42,7 @@ public final class Constants {
     //The second number is degrees over count per rev
     public final static double kShooterAngleScale = ((1/125)*(360/42));
 
+	public static int kShooterNeoExit = 4 ;
 
 
 }
