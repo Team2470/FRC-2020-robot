@@ -38,10 +38,9 @@ public final class Constants {
     public static final boolean kShooterInverted = true;
     public static final int kShooterNeoAngle = 2;
     public static final boolean kShooterAngleInverted = false;
-	public static int kShooterNeoExit = 4 ;
-    // public static final int kStorageOutputVictorID = 2;
-    // public static final boolean kStorageOutputInverted = false;
-
+    public static int kShooterNeoExit = 4;
+    public static boolean kShooterExitInverted = true;
+    
     // PCM (Id 0)
     public static final int kIntakeSolenoidLeft = 0;
     public static final int kIntakeSolenoidRight = 1;

@@ -14,7 +14,6 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import bjorg.sim.WPI_CANSparkMax;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -77,6 +76,7 @@ public class Shooter extends SubsystemBase {
 
     m_exitMotor = new WPI_CANSparkMax(Constants.kShooterNeoExit, MotorType.kBrushless);
     initSparkMax(m_exitMotor);
+    m_exitMotor.setInverted(Constants.kShooterExitInverted);
 
     m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
@@ -187,6 +187,7 @@ public class Shooter extends SubsystemBase {
    */
   public void stop() {
     m_shooterMaster.stopMotor();
+    m_exitMotor.stopMotor();
   }
 
 
