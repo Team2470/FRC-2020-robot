@@ -22,5 +22,5 @@ public class LoadConveyorCommand extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(new WaitForBallCommand(storage),
           new IndexBallCommand(storage));
-  }
+    }
 }

@@ -17,12 +17,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithController;
+import frc.robot.commands.IndexBallCommand;
 import frc.robot.commands.IntakeDeployCommand;
+import frc.robot.commands.IntakeDumpCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.LoadConveyorCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
+import frc.robot.commands.WaitForBallCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FakeSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -30,6 +33,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.InternalButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -49,6 +55,8 @@ public class RobotContainer {
 
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
+  // private final InternalButton m_indexPowercellButton = new InternalButton();
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -61,6 +69,10 @@ public class RobotContainer {
 
     // Set default commands
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
+    m_storage.setDefaultCommand(new SequentialCommandGroup(
+      new WaitForBallCommand(m_storage),
+      new IndexBallCommand(m_storage)
+    ));
   }
 
   /**
@@ -86,6 +98,8 @@ public class RobotContainer {
     new JoystickButton(m_controller, Button.kB.value)
         .whenPressed(() -> m_fake.setState("B Pressed"))
         .whenReleased(() -> m_fake.setState(""));
+
+      // m_indexPowercellButton.whenPressed(new IndexBallCommand(m_storage));
   }
 
   /**
@@ -103,6 +117,10 @@ public class RobotContainer {
       storageCommands.add(new TestStorageBackwardCommand(m_storage));
       storageCommands.add(new TestStorageForwardCommand(m_storage));
       storageCommands.add(new LoadConveyorCommand(m_storage));
+      storageCommands.add(new ParallelCommandGroup(
+        new IntakeDumpCommand(m_intake),
+        new TestStorageBackwardCommand(m_storage)
+      ));
       storageCommands.add(m_storage);
 
     ShuffleboardLayout intakeCommands = Shuffleboard.getTab("Commands")
@@ -121,8 +139,13 @@ public class RobotContainer {
       .withProperties(Map.of("Label position", "HIDDEN"));
     shooterCommands.add(new TestShooterCommand(m_shooter));
     shooterCommands.add(m_shooter);
+
+    // SmartDashboard.putData("Dump Powercells", );
   }
 
+  public void periodic() {
+    // m_indexPowercellButton.setPressed(m_storage.isBallAtInput());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
