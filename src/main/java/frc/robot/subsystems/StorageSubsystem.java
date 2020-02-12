@@ -44,7 +44,7 @@ public class StorageSubsystem extends SubsystemBase {
   }
 
   public boolean isBallAtInput() {
-    return m_ballAtInput.get();
+    return !m_ballAtInput.get();
   }
 
   public boolean isBallAtOutput() {
