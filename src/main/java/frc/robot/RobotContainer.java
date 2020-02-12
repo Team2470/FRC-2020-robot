@@ -71,7 +71,7 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
     m_storage.setDefaultCommand(new SequentialCommandGroup(
       new WaitForBallCommand(m_storage),
-      new IndexBallCommand(m_storage)
+      new IndexBallCommand(m_storage, m_shooter)
     ));
   }
 
@@ -116,7 +116,7 @@ public class RobotContainer {
 
       storageCommands.add(new TestStorageBackwardCommand(m_storage));
       storageCommands.add(new TestStorageForwardCommand(m_storage));
-      storageCommands.add(new LoadConveyorCommand(m_storage));
+      storageCommands.add(new LoadConveyorCommand(m_storage, m_shooter));
       storageCommands.add(new ParallelCommandGroup(
         new IntakeDumpCommand(m_intake),
         new TestStorageBackwardCommand(m_storage)

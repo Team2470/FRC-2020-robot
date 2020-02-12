@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -17,10 +18,10 @@ public class LoadConveyorCommand extends SequentialCommandGroup {
   /**
    * Creates a new LoadConveyorCommand.
    */
-  public LoadConveyorCommand(StorageSubsystem storage) {
+  public LoadConveyorCommand(StorageSubsystem storage, Shooter shooter) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new WaitForBallCommand(storage),
-          new IndexBallCommand(storage));
+          new IndexBallCommand(storage, shooter));
     }
 }
