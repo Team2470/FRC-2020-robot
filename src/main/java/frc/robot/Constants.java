@@ -25,13 +25,13 @@ public final class Constants {
     public static final int kSwitchArcadeRight = 5; // Right arcade locking switch
 
     // CAN IDs
-    public static final int kDriveTalonRightAId = 0;
-    public static final int kDriveTalonRightBId = 1;
-    public static final int kDriveTalonLeftAId  = 2;
-    public static final int kDriveTalonLeftBId  = 3;
+    public static final int kDriveTalonRightAId = 13;
+    public static final int kDriveTalonRightBId = 14;
+    public static final int kDriveTalonLeftAId  = 11;
+    public static final int kDriveTalonLeftBId  = 12;
 
     // PCM / Pneumatics Control Module
-    public static final int kGearShiftSolenoidId = 0; // Channel 0
+    public static final int kGearShiftSolenoidId = 4; // Channel 0
 
     // PWM
     public static final int kShooterTalon        = 1;

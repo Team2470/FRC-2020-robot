@@ -38,6 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftSlave = new WPI_TalonFX(Constants.kDriveTalonLeftBId);
     m_leftSlave.follow(m_leftMaster);
     addChild("Left Talon", m_leftMaster);
+    
     m_rightMaster = new WPI_TalonFX(Constants.kDriveTalonRightAId);
     m_rightSlave = new WPI_TalonFX(Constants.kDriveTalonRightBId);
     m_rightSlave.follow(m_rightMaster);
