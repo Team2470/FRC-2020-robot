@@ -9,20 +9,24 @@ package frc.robot;
 
 import java.util.Map;
 
+import bjorg.triggers.XboxControllerTrigger;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithController;
+import frc.robot.commands.ForwardStorageExitCommand;
 import frc.robot.commands.IndexBallCommand;
 import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.IntakeDumpCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.LoadConveyorCommand;
+import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.ReverseStorageExitCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
@@ -87,6 +91,24 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    JoystickButton intakeDeployButton = new JoystickButton(m_controller, XboxController.Button.kBumperLeft.value);
+    intakeDeployButton.whileHeld(new IntakeDeployCommand(m_intake));
+
+    JoystickButton dumpPowerCellsButton = new JoystickButton(m_controller, XboxController.Button.kY.value);
+    dumpPowerCellsButton.whileHeld(new ParallelCommandGroup(
+      new IntakeDumpCommand(m_intake),
+      new TestStorageBackwardCommand(m_storage)
+    ));
+
+    JoystickButton conveyorForwardButton = new JoystickButton(m_controller, XboxController.Button.kBumperRight.value);
+    conveyorForwardButton.whileHeld(new ParallelCommandGroup(
+      new TestStorageForwardCommand(m_storage),
+      new ForwardStorageExitCommand(m_storageExit)
+    ));
+
+    XboxControllerTrigger shooterTrigger = new XboxControllerTrigger(m_controller, Hand.kLeft);
+    shooterTrigger.whileActiveOnce(new ManualShooterCommand(m_shooter, m_controller));
 
     // Configure out shooter buttons
     // TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
