@@ -30,14 +30,14 @@ public final class Constants {
 
 
     // CAN IDs
-    public static final int kDriveTalonRightAId = 20;
-    public static final int kDriveTalonRightBId = 21;
-    public static final int kDriveTalonLeftAId  = 22;
-    public static final int kDriveTalonLeftBId  = 23;
+    public static final int kDriveTalonRightAId = 13;
+    public static final int kDriveTalonRightBId = 14;
+    public static final int kDriveTalonLeftAId  = 11;
+    public static final int kDriveTalonLeftBId  = 12;
 
-    public static final int kIntakeTalonAdress = 26;
+    public static final int kIntakeTalonAdress = 22;
     public static final boolean kIntakeInverted = false;
-    public static final int kStorageMotorTalonID = 27;
+    public static final int kStorageMotorTalonID = 20;
     public static final boolean kStorageMotorInverted = true;
 
     public static final int kShooterNeoMaster   = 3;

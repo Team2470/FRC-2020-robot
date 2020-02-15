@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,7 +18,7 @@ import frc.robot.Constants;
 
 public class StorageSubsystem extends SubsystemBase {
 
-  private final WPI_VictorSPX m_conveyorMotor;
+  private final WPI_TalonSRX m_conveyorMotor;
   private final DigitalInput m_ballAtInput;  
   private final DigitalInput m_ballAtOutput;
 
@@ -34,7 +33,7 @@ public class StorageSubsystem extends SubsystemBase {
     addChild("Ball At Input", m_ballAtInput);
     addChild("Ball At Output", m_ballAtOutput);
     
-    m_conveyorMotor = new WPI_VictorSPX(Constants.kStorageMotorTalonID);
+    m_conveyorMotor = new WPI_TalonSRX(Constants.kStorageMotorTalonID);
     m_conveyorMotor.setInverted(Constants.kStorageMotorInverted);
     addChild("Conveyor Motor", m_conveyorMotor);
   }
