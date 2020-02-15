@@ -10,6 +10,7 @@ package frc.robot;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -26,8 +27,7 @@ import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
 import frc.robot.commands.WaitForBallCommand;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.FakeSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageSubsystem;
@@ -46,9 +46,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drive m_drive = new Drive();
+  private final DriveSubsystem m_drive = new DriveSubsystem();
   private final Shooter m_shooter = new Shooter();
-  private final FakeSubsystem m_fake = new FakeSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final StorageSubsystem m_storage = new StorageSubsystem();
   private final Climber m_climber = new Climber();
@@ -56,6 +55,7 @@ public class RobotContainer {
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
   // private final InternalButton m_indexPowercellButton = new InternalButton();
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -88,18 +88,7 @@ public class RobotContainer {
     //new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
     //new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kA.value)
-        .whenPressed(() -> m_fake.setRandomNumber())
-        .whenReleased(() -> m_fake.stopRandomNumber());
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kB.value)
-        .whenPressed(() -> m_fake.setState("B Pressed"))
-        .whenReleased(() -> m_fake.setState(""));
-
-      // m_indexPowercellButton.whenPressed(new IndexBallCommand(m_storage));
+    // m_indexPowercellButton.whenPressed(new IndexBallCommand(m_storage));
   }
 
   /**
