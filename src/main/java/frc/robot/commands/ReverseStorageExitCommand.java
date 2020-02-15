@@ -8,21 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.StorageSubsystem;
+import frc.robot.subsystems.StorageExitSubsystem;
 
-public class IndexBallCommand extends CommandBase {
+public class ReverseStorageExitCommand extends CommandBase {
 
-  private final StorageSubsystem m_index;
+  private final StorageExitSubsystem m_storageExit;
+
   /**
-   * Creates a new IndexBallCommand.
+   * Creates a new ReverseStorageExitCommand.
    */
-  public IndexBallCommand(StorageSubsystem index) {
+  public ReverseStorageExitCommand(StorageExitSubsystem exit) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_storageExit = exit;
 
-    m_index = index;
-    addRequirements(m_index);
-    
+    addRequirements(m_storageExit);
   }
 
   // Called when the command is initially scheduled.
@@ -33,22 +32,18 @@ public class IndexBallCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_index.setCoveyorMotor(0.5);
+    m_storageExit.set(-0.25);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_index.stopMotors();
-
+    m_storageExit.stop();
   }
-
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    return !m_index.isBallAtInput();
-
+    return false;
   }
 }

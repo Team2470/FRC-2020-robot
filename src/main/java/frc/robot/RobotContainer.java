@@ -23,6 +23,7 @@ import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.IntakeDumpCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.LoadConveyorCommand;
+import frc.robot.commands.ReverseStorageExitCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
@@ -30,6 +31,7 @@ import frc.robot.commands.WaitForBallCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.StorageExitSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -50,6 +52,7 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final StorageSubsystem m_storage = new StorageSubsystem();
+  private final StorageExitSubsystem m_storageExit = new StorageExitSubsystem();
   private final Climber m_climber = new Climber();
 
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
@@ -71,8 +74,10 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
     m_storage.setDefaultCommand(new SequentialCommandGroup(
       new WaitForBallCommand(m_storage),
-      new IndexBallCommand(m_storage, m_shooter)
+      new IndexBallCommand(m_storage)
     ));
+
+    m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
   }
 
   /**
@@ -105,7 +110,7 @@ public class RobotContainer {
 
       storageCommands.add(new TestStorageBackwardCommand(m_storage));
       storageCommands.add(new TestStorageForwardCommand(m_storage));
-      storageCommands.add(new LoadConveyorCommand(m_storage, m_shooter));
+      storageCommands.add(new LoadConveyorCommand(m_storage));
       storageCommands.add(new ParallelCommandGroup(
         new IntakeDumpCommand(m_intake),
         new TestStorageBackwardCommand(m_storage)
@@ -126,7 +131,7 @@ public class RobotContainer {
       .withSize(2,2)
       .withPosition(4,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
-    shooterCommands.add(new TestShooterCommand(m_shooter));
+    shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
     shooterCommands.add(m_shooter);
 
     // SmartDashboard.putData("Dump Powercells", );

@@ -10,19 +10,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.StorageExitSubsystem;
 
 public class TestShooterCommand extends CommandBase {
 
   // Subsystems
   private final Shooter m_shooter;
+  private final StorageExitSubsystem m_storageExit;
 
   /**
    * Creates a new TestShooterCommand.
    */
-  public TestShooterCommand(Shooter shooter) {
+  public TestShooterCommand(Shooter shooter, StorageExitSubsystem storageExit) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
-    addRequirements(m_shooter);
+    m_storageExit = storageExit;
+    addRequirements(m_shooter, m_storageExit);
   }
 
   // Called when the command is initially scheduled.
@@ -40,13 +43,14 @@ public class TestShooterCommand extends CommandBase {
     m_shooter.shoot(speed);
 
     double exitSpeed = SmartDashboard.getNumber("Shooter Exit Output", 0.0);
-    m_shooter.moveExitMotor(exitSpeed);
+    m_storageExit.set(exitSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stop();
+    m_storageExit.stop();
     SmartDashboard.putNumber("Shooter Output", 0.0);
     SmartDashboard.putNumber("Shooter Exit Output", 0.0);
   }

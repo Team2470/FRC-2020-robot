@@ -18,10 +18,10 @@ public class LoadConveyorCommand extends SequentialCommandGroup {
   /**
    * Creates a new LoadConveyorCommand.
    */
-  public LoadConveyorCommand(StorageSubsystem storage, Shooter shooter) {
+  public LoadConveyorCommand(StorageSubsystem storage) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new WaitForBallCommand(storage),
-          new IndexBallCommand(storage, shooter));
+          new IndexBallCommand(storage));
     }
 }

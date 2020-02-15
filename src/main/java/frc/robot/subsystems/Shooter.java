@@ -31,9 +31,6 @@ public class Shooter extends SubsystemBase {
 
   private final CANEncoder m_shooterAngleEncoder;
 
-  //moves powercell into shooter
-  private final WPI_CANSparkMax m_exitMotor;
-
   double currentList[] = new double[5];
   int positionInList = 0;
 
@@ -73,10 +70,6 @@ public class Shooter extends SubsystemBase {
     addChild("Shooter Slave", m_shooterSlave);
 
     m_shooterEncoder = m_shooterMaster.getEncoder();
-
-    m_exitMotor = new WPI_CANSparkMax(Constants.kShooterNeoExit, MotorType.kBrushless);
-    initSparkMax(m_exitMotor);
-    m_exitMotor.setInverted(Constants.kShooterExitInverted);
 
     m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
@@ -119,9 +112,6 @@ public class Shooter extends SubsystemBase {
     m_shooterMaster.set(percentOutput);
   }
 
-  public void moveExitMotor(double percentOutput){
-    m_exitMotor.set(percentOutput);
-  }
 /**
  * Set goal 
  * @param goalRPM goal speed/velocity in rotation per min.
@@ -187,7 +177,6 @@ public class Shooter extends SubsystemBase {
    */
   public void stop() {
     m_shooterMaster.stopMotor();
-    m_exitMotor.stopMotor();
   }
 
 

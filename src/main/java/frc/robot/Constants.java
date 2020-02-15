@@ -52,7 +52,7 @@ public final class Constants {
     public static final int kIntakeSolenoidLeft = 0;
     public static final int kIntakeSolenoidRight = 1;
     public static final int kClimberSolenoid = 3;
-    public static final int kGearShiftSolenoidId = 4; // Channel 0
+    public static final int kGearShiftSolenoidId = 4;
 
 
     // Shooter
