@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -15,10 +17,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
-  private final WPI_TalonFX m_leftMaster;
-  private final WPI_TalonFX m_leftSlave;
-  private final WPI_TalonFX m_rightMaster;
-  private final WPI_TalonFX m_rightSlave;
+  private final WPI_VictorSPX m_leftMaster;
+  private final WPI_TalonSRX m_leftSlave;
+  private final WPI_TalonSRX m_rightMaster;
+  private final WPI_TalonSRX m_rightSlave;
   // private final Spark m_leftMotorController;
   // private final Spark m_rightMotorController;
   private final DifferentialDrive m_diffDriveController;
@@ -34,13 +36,13 @@ public class DriveSubsystem extends SubsystemBase {
     // m_leftMotorController = new Spark(Constants.kDriveSparkLeft);
     // m_rightMotorController = new Spark(Constants.kDriveSparkRight);
     // Motor Controllers
-    m_leftMaster = new WPI_TalonFX(Constants.kDriveTalonLeftAId);
-    m_leftSlave = new WPI_TalonFX(Constants.kDriveTalonLeftBId);
+    m_leftMaster = new WPI_VictorSPX(Constants.kDriveTalonLeftAId);
+    m_leftSlave = new WPI_TalonSRX(Constants.kDriveTalonLeftBId);
     m_leftSlave.follow(m_leftMaster);
     addChild("Left Talon", m_leftMaster);
     
-    m_rightMaster = new WPI_TalonFX(Constants.kDriveTalonRightAId);
-    m_rightSlave = new WPI_TalonFX(Constants.kDriveTalonRightBId);
+    m_rightMaster = new WPI_TalonSRX(Constants.kDriveTalonRightAId);
+    m_rightSlave = new WPI_TalonSRX(Constants.kDriveTalonRightBId);
     m_rightSlave.follow(m_rightMaster);
     addChild("Right Talon", m_rightMaster);
     m_diffDriveController = new DifferentialDrive(m_leftMaster, m_rightMaster);
