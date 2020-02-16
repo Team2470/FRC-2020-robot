@@ -44,7 +44,7 @@ public final class Constants {
     public static final int kShooterNeoSlave = 1;
     public static final boolean kShooterInverted = true;
     public static final int kShooterNeoAngle = 2;
-    public static final boolean kShooterAngleInverted = false;
+    public static final boolean kShooterAngleInverted = true;
     public static int kShooterNeoExit = 4;
     public static boolean kShooterExitInverted = true;
     
