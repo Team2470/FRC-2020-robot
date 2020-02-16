@@ -178,6 +178,7 @@ public class Shooter extends SubsystemBase {
    */
   public void stop() {
     m_shooterMaster.stopMotor();
+    m_shooterAngleMotor.stopMotor();
   }
 
 
