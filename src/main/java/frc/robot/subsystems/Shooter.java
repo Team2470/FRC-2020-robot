@@ -74,6 +74,7 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
+    m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
     
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
