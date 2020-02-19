@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageSubsystem;
 
 public class IndexBallCommand extends CommandBase {
@@ -20,28 +21,24 @@ public class IndexBallCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
 
     m_index = index;
-
     addRequirements(m_index);
-
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    m_index.setCoveyorMotor(0.25);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_index.setCoveyorMotor(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-  
     m_index.stopMotors();
 
   }

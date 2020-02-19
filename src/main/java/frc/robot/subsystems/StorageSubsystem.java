@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +19,6 @@ import frc.robot.Constants;
 public class StorageSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX m_conveyorMotor;
-  private final WPI_VictorSPX m_outputMotor;
   private final DigitalInput m_ballAtInput;  
   private final DigitalInput m_ballAtOutput;
 
@@ -38,10 +36,6 @@ public class StorageSubsystem extends SubsystemBase {
     m_conveyorMotor = new WPI_TalonSRX(Constants.kStorageMotorTalonID);
     m_conveyorMotor.setInverted(Constants.kStorageMotorInverted);
     addChild("Conveyor Motor", m_conveyorMotor);
-
-    m_outputMotor = new WPI_VictorSPX(Constants.kStorageOutputVictorID);
-    m_outputMotor.setInverted(Constants.kStorageOutputInverted);
-    addChild("Output Motor", m_outputMotor);
   }
 
   public void setCoveyorMotor(double MotorSpeed) 
@@ -49,13 +43,8 @@ public class StorageSubsystem extends SubsystemBase {
     m_conveyorMotor.set(ControlMode.PercentOutput, MotorSpeed);
   }
 
-  public void setOutputMotor(double MotorSpeed)
-  {
-    m_outputMotor.set(ControlMode.PercentOutput, MotorSpeed);
-  }
-
   public boolean isBallAtInput() {
-    return m_ballAtInput.get();
+    return !m_ballAtInput.get();
   }
 
   public boolean isBallAtOutput() {
@@ -64,9 +53,7 @@ public class StorageSubsystem extends SubsystemBase {
 
   public void stopMotors() {
     m_conveyorMotor.setNeutralMode(NeutralMode.Coast);
-    m_outputMotor.setNeutralMode(NeutralMode.Coast);
     m_conveyorMotor.stopMotor();
-    m_outputMotor.stopMotor();
   }
  
   @Override

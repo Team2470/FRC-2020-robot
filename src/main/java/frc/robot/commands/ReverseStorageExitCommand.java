@@ -7,55 +7,43 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.StorageExitSubsystem;
 
-public class ClimberCommand extends CommandBase {
-  public static final double kTargetDistance = 5;
+public class ReverseStorageExitCommand extends CommandBase {
 
-  Solenoid climberSolenoid = new Solenoid(0);
-  private final Climber m_climber;
-
+  private final StorageExitSubsystem m_storageExit;
 
   /**
-   * Creates a new ClimberCommand.
+   * Creates a new ReverseStorageExitCommand.
    */
-  public ClimberCommand(Climber climber) {
+  public ReverseStorageExitCommand(StorageExitSubsystem exit) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_climber = climber;
-    addRequirements(m_climber);
+    m_storageExit = exit;
+
+    addRequirements(m_storageExit);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //deploy solenoid to contain climber arm
-    //climberSolenoid.set(true);
-    m_climber.climb(50);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //retract solenoid to allow spring to deploy climber
-    //climberSolenoid.set(false);
+    m_storageExit.set(-0.25);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.climb(0);
+    m_storageExit.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climber.getDistance()>= kTargetDistance){
-      return true;
-    }else{
     return false;
-    }
   }
 }

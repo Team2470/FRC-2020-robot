@@ -5,57 +5,52 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.StorageExitSubsystem;
 
-public class ClimberCommand extends CommandBase {
-  public static final double kTargetDistance = 5;
+public class ManualShooterCommand extends CommandBase {
 
-  Solenoid climberSolenoid = new Solenoid(0);
-  private final Climber m_climber;
-
+  // Subsystems
+  private final Shooter m_shooter;
+  private final XboxController m_controller;
 
   /**
-   * Creates a new ClimberCommand.
+   * Creates a new ManualShooterCommand.
    */
-  public ClimberCommand(Climber climber) {
+  public ManualShooterCommand(Shooter shooter, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_climber = climber;
-    addRequirements(m_climber);
+    m_shooter = shooter;
+    m_controller = controller;
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //deploy solenoid to contain climber arm
-    //climberSolenoid.set(true);
-    m_climber.climb(50);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //retract solenoid to allow spring to deploy climber
-    //climberSolenoid.set(false);
+    double speed = m_controller.getTriggerAxis(Hand.kLeft);
+    m_shooter.shoot(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.climb(0);
+    m_shooter.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_climber.getDistance()>= kTargetDistance){
-      return true;
-    }else{
     return false;
-    }
   }
 }
