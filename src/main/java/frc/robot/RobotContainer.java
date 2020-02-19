@@ -9,33 +9,39 @@ package frc.robot;
 
 import java.util.Map;
 
+import com.kennedyrobotics.triggers.DPadTrigger;
+import bjorg.triggers.XboxControllerTrigger;
+import com.kennedyrobotics.triggers.DPadTrigger.DPad;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveWithController;
+import frc.robot.commands.ForwardStorageExitCommand;
 import frc.robot.commands.IndexBallCommand;
 import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.IntakeDumpCommand;
 import frc.robot.commands.IntakeRetractCommand;
 import frc.robot.commands.LoadConveyorCommand;
-import frc.robot.commands.TestShooterCommand;
+import frc.robot.commands.ReverseStorageExitCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
 import frc.robot.commands.WaitForBallCommand;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.FakeSubsystem;
+import frc.robot.commands.shooter.AimShooterHoodDownCommand;
+import frc.robot.commands.shooter.AimShooterHoodUpCommand;
+import frc.robot.commands.shooter.ManualShooterCommand;
+import frc.robot.commands.shooter.TestShooterCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.StorageExitSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.InternalButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -46,16 +52,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drive m_drive = new Drive();
+  private final DriveSubsystem m_drive = new DriveSubsystem();
   private final Shooter m_shooter = new Shooter();
-  private final FakeSubsystem m_fake = new FakeSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final StorageSubsystem m_storage = new StorageSubsystem();
+  private final StorageExitSubsystem m_storageExit = new StorageExitSubsystem();
   private final Climber m_climber = new Climber();
 
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
   // private final InternalButton m_indexPowercellButton = new InternalButton();
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -71,8 +78,10 @@ public class RobotContainer {
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
     m_storage.setDefaultCommand(new SequentialCommandGroup(
       new WaitForBallCommand(m_storage),
-      new IndexBallCommand(m_storage, m_shooter)
+      new IndexBallCommand(m_storage)
     ));
+
+    m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
   }
 
   /**
@@ -83,23 +92,37 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    JoystickButton intakeDeployButton = new JoystickButton(m_controller, XboxController.Button.kBumperLeft.value);
+    intakeDeployButton.whileHeld(new IntakeDeployCommand(m_intake));
+
+    JoystickButton dumpPowerCellsButton = new JoystickButton(m_controller, XboxController.Button.kY.value);
+    dumpPowerCellsButton.whileHeld(new ParallelCommandGroup(
+      new IntakeDumpCommand(m_intake),
+      new TestStorageBackwardCommand(m_storage)
+    ));
+
+    JoystickButton conveyorForwardButton = new JoystickButton(m_controller, XboxController.Button.kBumperRight.value);
+    conveyorForwardButton.whileHeld(new ParallelCommandGroup(
+      new TestStorageForwardCommand(m_storage),
+      new ForwardStorageExitCommand(m_storageExit)
+    ));
+
+    XboxControllerTrigger shooterTrigger = new XboxControllerTrigger(m_controller, Hand.kLeft);
+    shooterTrigger.whileActiveOnce(new ManualShooterCommand(m_shooter, m_controller));
+
+    DPadTrigger aimHoodUpTrigger = new DPadTrigger(m_controller, DPad.kUp);
+    aimHoodUpTrigger.whileActiveOnce(new AimShooterHoodUpCommand(m_shooter));
+
+    DPadTrigger aimHoodDownTrigger = new DPadTrigger(m_controller, DPad.KDown);
+    aimHoodDownTrigger.whileActiveOnce(new AimShooterHoodDownCommand(m_shooter));
+
+
     // Configure out shooter buttons
     // TestShooterCommand m_testShooterCmd = new TestShooterCommand(m_shooter);
     //new JoystickButton(m_controller, Button.kBumperLeft.value).whenPressed(m_testShooterCmd);
     //new JoystickButton(m_controller, Button.kBumperRight.value).cancelWhenPressed(m_testShooterCmd);
 
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kA.value)
-        .whenPressed(() -> m_fake.setRandomNumber())
-        .whenReleased(() -> m_fake.stopRandomNumber());
-
-    // Set a random number when pressed, set to 0 when released
-    new JoystickButton(m_controller, Button.kB.value)
-        .whenPressed(() -> m_fake.setState("B Pressed"))
-        .whenReleased(() -> m_fake.setState(""));
-
-      // m_indexPowercellButton.whenPressed(new IndexBallCommand(m_storage));
+    // m_indexPowercellButton.whenPressed(new IndexBallCommand(m_storage));
   }
 
   /**
@@ -116,7 +139,7 @@ public class RobotContainer {
 
       storageCommands.add(new TestStorageBackwardCommand(m_storage));
       storageCommands.add(new TestStorageForwardCommand(m_storage));
-      storageCommands.add(new LoadConveyorCommand(m_storage, m_shooter));
+      storageCommands.add(new LoadConveyorCommand(m_storage));
       storageCommands.add(new ParallelCommandGroup(
         new IntakeDumpCommand(m_intake),
         new TestStorageBackwardCommand(m_storage)
@@ -137,8 +160,15 @@ public class RobotContainer {
       .withSize(2,2)
       .withPosition(4,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
-    shooterCommands.add(new TestShooterCommand(m_shooter));
+    shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
     shooterCommands.add(m_shooter);
+
+    ShuffleboardLayout storageExit = Shuffleboard.getTab("Commands")
+            .getLayout("StorageExit", BuiltInLayouts.kList)
+            .withSize(2,2)
+            .withPosition(6,0)
+            .withProperties(Map.of("Label position", "HIDDEN"));
+    storageExit.add(m_storageExit);
 
     // SmartDashboard.putData("Dump Powercells", );
   }

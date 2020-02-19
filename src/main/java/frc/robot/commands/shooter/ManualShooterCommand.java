@@ -5,30 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.StorageExitSubsystem;
 
-public class DriveWithController extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_drive;
-  private final XboxController m_xboxController;
-  
+public class ManualShooterCommand extends CommandBase {
+
+  // Subsystems
+  private final Shooter m_shooter;
+  private final XboxController m_controller;
+
   /**
-   * Creates a new DriveWithController.
-   * @param drive Drive subsystem to control
-   * @param xboxController xboxController controller to use for driving
-   * @param gearSwitchButton JoystickButton to use for gear shift
+   * Creates a new ManualShooterCommand.
    */
-  public DriveWithController(DriveSubsystem drive, XboxController xboxController) {
+  public ManualShooterCommand(Shooter shooter, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = drive;
-    m_xboxController = xboxController;
-
-    addRequirements(m_drive);
+    m_shooter = shooter;
+    m_controller = controller;
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -39,23 +38,14 @@ public class DriveWithController extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Get data from the controller
-    double move = m_xboxController.getY(Hand.kLeft);
-    double rotate = m_xboxController.getX(Hand.kRight);
-
-    // Process the data
-    move = -move;
-
-    // Tell the drive subsystem
-    m_drive.arcadeDrive(move, rotate);
-    m_drive.setGear(m_xboxController.getAButton());
-
+    double speed = m_controller.getTriggerAxis(Hand.kLeft);
+    m_shooter.shoot(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.stop(); 
+    m_shooter.stop();
   }
 
   // Returns true when the command should end.
