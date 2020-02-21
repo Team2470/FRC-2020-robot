@@ -45,4 +45,37 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Vision Area", area);
     SmartDashboard.putNumber("Target Found", valid);
   }
+  /**
+   * Switches between driving/aiming vision
+   * 
+   * @param setVision true = driving mode
+   */
+  public void setDriverMode(boolean setVision) {
+
+    if(setVision) {
+      m_limeTable.getEntry("camMode").setNumber(1);
+
+    } else {
+      m_limeTable.getEntry("camMode").setNumber(0);
+    }
+
+  }
+  /**
+   * Swtches big picture mode for Driving/Conveyor View
+   * 
+   * @param setVision true = Driving/Aiming mode
+   */
+  public void viewConveyor(boolean setVision) {
+
+    if(setVision) {
+      m_limeTable.getEntry("stream").setNumber(1);
+
+    } else {
+      m_limeTable.getEntry("stream").setNumber(2);
+    }
+
+
+  }
+
+
 }

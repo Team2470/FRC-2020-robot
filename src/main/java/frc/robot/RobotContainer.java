@@ -41,6 +41,7 @@ import frc.robot.subsystems.StorageSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -172,6 +173,14 @@ public class RobotContainer {
     storageExit.add(m_storageExit);
 
     // SmartDashboard.putData("Dump Powercells", );
+    ShuffleboardLayout visionCommands = Shuffleboard.getTab("Commands")
+    .getLayout("Vision", BuiltInLayouts.kList)
+    .withSize(2,2)
+    .withPosition(8,0)
+    .withProperties(Map.of("Label position", "HIDDEN"));
+    visionCommands.add("Driver Mode", new InstantCommand(() -> m_vision.setDriverMode(true), m_vision));
+    visionCommands.add("Vision Mode", new InstantCommand(() -> m_vision.setDriverMode(false), m_vision));
+    
   }
 
   public void periodic() {
