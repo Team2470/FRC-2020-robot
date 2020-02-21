@@ -14,32 +14,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
+
+  private NetworkTable m_limeTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private NetworkTableEntry m_tx = m_limeTable.getEntry("tx");
+  private NetworkTableEntry m_ty = m_limeTable.getEntry("ty");
+  private NetworkTableEntry m_ta = m_limeTable.getEntry("ta");
+  private NetworkTableEntry m_tv = m_limeTable.getEntry("tv");
+
+  private NetworkTableEntry m_usbCam = m_limeTable.getEntry("stream");
   /**
    * Creates a new Vision.
    */
   public Vision() {
+    // Set camera to PIP mode
+    m_usbCam.setNumber(1);
 
   }
 
   @Override
   public void periodic() {
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry tv = table.getEntry("tv");
-
     //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
-    boolean valid = tv.getBoolean(false);
+    double x = m_tx.getDouble(0.0);
+    double y = m_ty.getDouble(0.0);
+    double area = m_ta.getDouble(0.0);
+    double valid = m_tv.getDouble(0.0);
 
     //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putBoolean("LimelightTargetFound", valid);
-        // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Vision X", x);
+    SmartDashboard.putNumber("Vision Y", y);
+    SmartDashboard.putNumber("Vision Area", area);
+    SmartDashboard.putNumber("Target Found", valid);
   }
 }

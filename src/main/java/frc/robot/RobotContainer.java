@@ -38,6 +38,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageExitSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -58,7 +59,7 @@ public class RobotContainer {
   private final StorageSubsystem m_storage = new StorageSubsystem();
   private final StorageExitSubsystem m_storageExit = new StorageExitSubsystem();
   private final Climber m_climber = new Climber();
-
+  private final Vision m_vision = new Vision();
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
   // private final InternalButton m_indexPowercellButton = new InternalButton();
