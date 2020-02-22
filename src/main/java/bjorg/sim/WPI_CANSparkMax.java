@@ -12,15 +12,20 @@
 package bjorg.sim;
 
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.hal.HALValue;
 import edu.wpi.first.hal.SimBoolean;
 import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.SimValue;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import frc.robot.Robot;
 
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 
 
 public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
@@ -31,7 +36,10 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
     private SimDevice m_simDevice;
     private SimDouble m_simSpeed;
     private SimDouble m_simCurrent;
-	private SimBoolean m_simInvert;
+		private SimBoolean m_simInvert;
+		private SimBoolean m_simFollow;
+		private SimValue m_simFollowMaster;
+		private SimValue m_simCurrentLimit;
 
     /**
      * Create a motor capable of simulation
@@ -48,12 +56,15 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
         m_simDevice = SimDevice.create("Spark Max", deviceNumber);
         if(m_simDevice != null) {
             m_simSpeed = m_simDevice.createDouble("Motor Output", false, 0.0);
-			m_simInvert = m_simDevice.createBoolean("Inverted?", false, false);
-			m_simCurrent = m_simDevice.createDouble("Current", false, 0.0);
+						m_simInvert = m_simDevice.createBoolean("Inverted?", false, false);
+						m_simCurrent = m_simDevice.createDouble("Current", false, 0.0);
+						m_simFollow = m_simDevice.createBoolean("Follow?", true, false);
+						m_simFollowMaster = m_simDevice.createValue("Master", true, HALValue.makeInt(0));
+						m_simCurrentLimit = m_simDevice.createValue("CurrentLimit", true, HALValue.makeInt(80));
         }
     }
 
-    // ------ set/get routines for WPILIB interfaces ------//
+  // ------ set/get routines for WPILIB interfaces ------//
     
 	/**
 	 * Common interface for setting the speed of a simple speed controller.
@@ -63,7 +74,9 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
 	 */
     @Override
     public void set(double speed) {
-        super.set(speed);
+			if (Robot.isReal()) {
+				super.set(speed);
+			}
         simSet(speed);
     }
 
@@ -110,7 +123,9 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
 	 */
 	@Override
 	public void setInverted(boolean isInverted) {
-		super.setInverted(isInverted);
+		if (Robot.isReal()) {
+			super.setInverted(isInverted);
+		}
 		if(m_simInvert != null){
 			m_simInvert.set(isInverted);
 		}
@@ -135,7 +150,9 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
 	 */
 	@Override
 	public void disable() {
-        super.disable();
+		if (Robot.isReal()) {
+			super.disable();
+		}
 		simSet(0.0);
 	}
 
@@ -144,9 +161,55 @@ public class WPI_CANSparkMax extends CANSparkMax implements Sendable {
 	 */
 	@Override
 	public void stopMotor() {
-        super.stopMotor();
+				if (Robot.isReal()) {
+					super.stopMotor();
+				}
         simSet(0.0);
     }
+
+	// ---- Low level overrides, including following mode ---- //
+	@Override
+	public CANError follow(final CANSparkMax leader, boolean invert) {
+		if(m_simFollow != null && m_simFollowMaster != null){
+			m_simFollow.set(true);
+			m_simFollowMaster.setValue(HALValue.makeInt(leader.getDeviceId()));
+		}
+		if (m_simInvert != null) {
+			m_simInvert.set(invert);
+		}
+
+		if (Robot.isReal()) {
+			return super.follow(leader, invert);
+		} else {
+			return CANError.kOk;
+		}
+	}
+
+	@Override
+	public CANError restoreFactoryDefaults() {
+		if (Robot.isReal()) {
+			return super.restoreFactoryDefaults();
+		} else {
+			return CANError.kOk;
+		}
+	}
+
+	@Override
+	public CANError setSmartCurrentLimit(int limit) {
+		if (m_simCurrentLimit != null) {
+			m_simCurrentLimit.setValue(HALValue.makeInt(limit));
+		}
+
+		if (Robot.isReal()) {
+			return super.setSmartCurrentLimit(limit);
+		} else {
+			return CANError.kOk;
+		}
+	}
+
+	public WPI_CANEncoder getEncoder() {
+		return new WPI_CANEncoder(this, EncoderType.kHallSensor, 0);
+	}
 
 	// ---- essentially a copy of SendableBase -------//
 	private String m_name = "";
