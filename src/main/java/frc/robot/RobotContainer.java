@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import frc.robot.commands.AutoAlignCommand;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.ForwardStorageExitCommand;
 import frc.robot.commands.IndexBallCommand;
@@ -183,6 +184,7 @@ public class RobotContainer {
     visionCommands.add(new NamedInstantCommand("Vision Mode", () -> m_vision.setDriverMode(false), m_vision));
     visionCommands.add(new NamedInstantCommand("Conveyor View", () -> m_vision.viewConveyor(true), m_vision));
     visionCommands.add(new NamedInstantCommand("Target View", () -> m_vision.viewConveyor(false), m_vision));
+    visionCommands.add(new AutoAlignCommand(m_vision, m_drive));
   }
 
   public void periodic() {
