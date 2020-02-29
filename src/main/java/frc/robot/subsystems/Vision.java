@@ -68,10 +68,10 @@ public class Vision extends SubsystemBase {
   public void viewConveyor(boolean setVision) {
 
     if(setVision) {
-      m_limeTable.getEntry("stream").setNumber(1);
+      m_limeTable.getEntry("stream").setNumber(2);
 
     } else {
-      m_limeTable.getEntry("stream").setNumber(2);
+      m_limeTable.getEntry("stream").setNumber(1);
     }
 
 
