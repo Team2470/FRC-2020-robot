@@ -27,7 +27,7 @@ public class ShooterCalibrateCommand extends CommandBase {
 
     @Override
     public void execute() {
-        m_shooter.setAngleMotorSpeed(kCalibrateSpeed);
+        m_shooter.setHoodAngleSpeed(kCalibrateSpeed);
         if (m_timer.hasPeriodPassed(kTimeOut)) {
             m_timedOut = true;
         }
@@ -41,7 +41,7 @@ public class ShooterCalibrateCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // Stop the shooter motor
-        m_shooter.setAngleMotorSpeed(0);
+        m_shooter.stopHoodMotor();
         // If Not interrupted
         //   - Zero the hood encoder
         if (!interrupted || !m_timedOut) {

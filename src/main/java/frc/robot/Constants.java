@@ -35,7 +35,7 @@ public final class Constants {
     public static final int kDriveTalonLeftAId  = 11;
     public static final int kDriveTalonLeftBId  = 12;
 
-    public static final int kIntakeTalonAdress = 22;
+    public static final int kIntakeTalonId = 22;
     public static final boolean kIntakeInverted = false;
     public static final int kStorageMotorTalonID = 20;
     public static final boolean kStorageMotorInverted = true;
