@@ -80,6 +80,7 @@ public class RobotContainer {
     ));
 
     m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
+    m_intake.setDefaultCommand(new IntakeRetractCommand(m_intake));
   }
 
   /**
