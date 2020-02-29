@@ -9,8 +9,10 @@ package frc.robot.commands;
 
 import java.util.Set;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 
 public class AutoAlignCommand extends CommandBase {
@@ -18,16 +20,20 @@ public class AutoAlignCommand extends CommandBase {
   private final DriveSubsystem m_drive;
   private final double m_kp = 0.1;
   private final double m_minimum = 0.05;
+  private final Shooter m_shooter;
+  private double m_targetHoodAngle;
   /**
    * Creates a new AutoAlignCommand.
    */
-  public AutoAlignCommand(Vision vision, DriveSubsystem drive) {
+  public AutoAlignCommand(Vision vision, DriveSubsystem drive, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_vision = vision;
     m_drive = drive;
+    m_shooter = shooter;
     
     addRequirements(vision);
     addRequirements(drive);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -37,27 +43,37 @@ public class AutoAlignCommand extends CommandBase {
     m_drive.setGear(false);
 
   }
+  private double calculateHoodAngle(double distance) {
+    return distance * 0.98 + 23;
+  }
 
+  private double getAngleAdjust(double angle){
+    double turnAngle = 0;
+    if(angle > 0) {
+      turnAngle = m_kp * angle + m_minimum;
+    }
+    else if (angle < 0) {
+      turnAngle = m_kp * angle - m_minimum;
+
+    }
+    return turnAngle;
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
     if(m_vision.getTargetFound())  {
       double angle = m_vision.getHorizontalAngleD();
-      double turnAngle = 0;
+      double turnAngle = getAngleAdjust(angle);
 
-      if(angle > 0) {
-        turnAngle = m_kp * angle + m_minimum;
-      }
-      else if (angle < 0) {
-        turnAngle = m_kp * angle - m_minimum;
+      double distance = m_vision.geTargetDistanceM();
+      m_targetHoodAngle = calculateHoodAngle(distance);
 
-      }
       m_drive.arcadeDrive(0, turnAngle);
-
+      m_shooter.setAngleMotorDegrees(m_targetHoodAngle);
 
     }
-    
+    SmartDashboard.putNumber("Hood Angle", m_targetHoodAngle);
   }
 
   // Called once the command ends or is interrupted.
@@ -71,7 +87,8 @@ public class AutoAlignCommand extends CommandBase {
   public boolean isFinished() {
 
     boolean targetAligned = Math.abs(m_vision.getHorizontalAngleD()) < 0.5;
-    return targetAligned;
+    boolean hoodReady = Math.abs(m_targetHoodAngle - m_shooter.getAngle()) < 0.5;
+    return targetAligned && hoodReady;
 
   }
 }

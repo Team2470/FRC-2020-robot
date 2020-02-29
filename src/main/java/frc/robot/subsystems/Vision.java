@@ -47,6 +47,7 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Target Found", valid);
     SmartDashboard.putNumber("Distance", geTargetDistanceM());
     SmartDashboard.putNumber("Horizontal Angle", getHorizontalAngleD());
+    
   }
   /**
    * Switches between driving/aiming vision
