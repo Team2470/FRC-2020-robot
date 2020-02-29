@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Vision extends SubsystemBase {
 
@@ -44,6 +45,8 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("Vision Y", y);
     SmartDashboard.putNumber("Vision Area", area);
     SmartDashboard.putNumber("Target Found", valid);
+    SmartDashboard.putNumber("Distance", geTargetDistanceM());
+    SmartDashboard.putNumber("Horizontal Angle", getHorizontalAngleD());
   }
   /**
    * Switches between driving/aiming vision
@@ -74,8 +77,47 @@ public class Vision extends SubsystemBase {
       m_limeTable.getEntry("stream").setNumber(1);
     }
 
+  }
+  /**
+   * Finds the distance from the base of the robot to the base of the target
+   * @return Distance in degrees from the base of the camera to the base of the target
+   */
+  public double geTargetDistanceM() {
+    if(m_tv.getDouble(0.0) == 1.0)  {
+      double yDegree = m_ty.getDouble(0.0);
+      return (Constants.kTargetHeightM - Constants.kCameraHeightM) / Math.tan( (Constants.kCameraAngleD + yDegree) * (Math.PI / 180) );    
+    } else {
+      return 0;
+    }
+
+  }
+  /**
+   * Returns if target is found
+   * @return true if found 
+   */
+  public boolean getTargetFound() {
+
+    if(m_tv.getDouble(0.0) == 1.0) {
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public double getHorizontalAngleD() {
+    if(m_tv.getDouble(0.0) == 1.0)  {
+      return m_tx.getDouble(0.0);  
+    } else {
+      return 0;
+    }
+
+  }
 
   }
 
 
-}
+
+
+
+
+
