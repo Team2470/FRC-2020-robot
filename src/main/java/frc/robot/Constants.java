@@ -43,7 +43,7 @@ public final class Constants {
     public static final int kShooterNeoMaster   = 3;
     public static final int kShooterNeoSlave = 1;
     public static final boolean kShooterInverted = true;
-    public static final int kShooterNeoAngle = 2;
+    public static final int kShooterNeoAngleId = 2;
     public static final boolean kShooterAngleInverted = true;
     public static int kShooterNeoExit = 4;
     public static boolean kShooterExitInverted = true;
@@ -54,17 +54,6 @@ public final class Constants {
     public static final int kClimberSolenoid = 3;
     public static final int kGearShiftSolenoidId = 4;
 
-
-    // Shooter
-    /**
-     * TO DO:
-     * determine cureent threshold boiiiiiiii for calibration of hood position
-     */
-    public static final double kCurrentThreshold = 0.5;
-
-    //conversion factor of the hood angler. The first number is the gear ratio
-    //The second number is degrees over count per rev
-    public final static double kShooterAngleScale = ((1/125)*(360/42));
 
     //Intake
     public static final double kIntakeCaptureSpeed = 0.5;

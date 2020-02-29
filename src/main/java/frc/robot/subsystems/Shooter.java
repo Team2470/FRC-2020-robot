@@ -14,11 +14,26 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import bjorg.sim.WPI_CANSparkMax;
+import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+
+  private static final float kHoodForwardSoftLimit = 0;
+  private static final float kHoodReverseSoftLimit = 0;
+
+  // Shooter
+  /**
+   * TO DO:
+   * determine cureent threshold boiiiiiiii for calibration of hood position
+   */
+  public static final double kCurrentThreshold = 0.5;
+
+  //conversion factor of the hood angler. The first number is the gear ratio
+  //The second number is degrees over count per rev
+  public final static double kShooterAngleScale = ((1/125)*(360/42));
 
   // the flywheel motor
   private final WPI_CANSparkMax m_shooterMaster;
@@ -71,14 +86,16 @@ public class Shooter extends SubsystemBase {
 
     m_shooterEncoder = m_shooterMaster.getEncoder();
 
-    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
+    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
     m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
     
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
-    m_shooterAngleEncoder.setPositionConversionFactor(Constants.kShooterAngleScale);
+    m_shooterAngleEncoder.setPositionConversionFactor(kShooterAngleScale);
     //42 counts per revolution
     //addChild("Shooter Angle Encoder", m_shooterAngleEncoder);
 
@@ -105,6 +122,11 @@ public class Shooter extends SubsystemBase {
     spark.setSmartCurrentLimit(40); // 40 amps
   }
 
+  public void enableHoodSoftLimits(boolean enabled) {
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, enabled);
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, enabled);
+  }
+
   /**
    * Start the shooter motor spinning
    * @param percentOutput Motor Speed [ -1.0 to 1.0 ] - Positive Numbers Shoot
@@ -113,18 +135,18 @@ public class Shooter extends SubsystemBase {
     m_shooterMaster.set(percentOutput);
   }
 
-/**
- * Set goal 
- * @param goalRPM goal speed/velocity in rotation per min.
- */
+  /**
+   * Set goal
+   * @param goalRPM goal speed/velocity in rotation per min.
+   */
   public void shootClosedLoop(double goalRPM){
     m_flywheelPID.setReference(goalRPM, ControlType.kVelocity);
     goalSpeed = goalRPM;
   }
-/**
- * Sets goal angle for the Hood using PID
- * @param angle goal angle of hood in degrees
- */
+  /**
+   * Sets goal angle for the Hood using PID
+   * @param angle goal angle of hood in degrees
+   */
   public void setAngleMotorDegrees(double goalAngle) {
     m_hoodPID.setReference(goalAngle, ControlType.kPosition);
 
@@ -133,23 +155,18 @@ public class Shooter extends SubsystemBase {
   public void setAngleMotorSpeed(double percentOutput){
     m_shooterAngleMotor.set(percentOutput);
   }
-/**
- * Determines whether hood is at home position
- */
-  public boolean isHoodPosition(){
+  /**
+   * Determines whether hood is at home position
+   */
+  public boolean isHoodAtHomePosition(){
     //calculates the average
     double average = 0;
     for(int i = 0; i<5; i++) {
       average = average+currentList[i];
     }
     average = average/5;
-    
-    if (average>Constants.kCurrentThreshold) {
-      return true;
-    }
-    else {
-      return false;
-    }
+
+    return average > kCurrentThreshold;
   }
 
   public double getAngle(){
@@ -169,7 +186,7 @@ public class Shooter extends SubsystemBase {
     return error;
   }
 
-  public void initEncoder(){
+  public void zeroHoodEncoder() {
       m_shooterAngleEncoder.setPosition(0);
   }
 
