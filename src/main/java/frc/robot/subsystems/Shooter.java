@@ -20,15 +20,15 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
-  private static final float kHoodForwardSoftLimit = 0;
-  private static final float kHoodReverseSoftLimit = 0;
+  private static final float kHoodForwardSoftLimit = 100;
+  private static final float kHoodReverseSoftLimit = 5;
 
   // Shooter
   /**
    * TO DO:
    * determine cureent threshold boiiiiiiii for calibration of hood position
    */
-  public static final double kCurrentThreshold = 0.5;
+  public static final double kCurrentThreshold = 0.04;
 
   //conversion factor of the hood angler. The first number is the gear ratio
   //The second number is degrees over count per rev
@@ -106,6 +106,7 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
     m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
     m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
+    m_shooterAngleMotor.setSmartCurrentLimit(3);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
 
     //42 counts per revolution
@@ -224,5 +225,6 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Hood Angle", getAngle());
     SmartDashboard.putNumber("Hood Angle(Raw)", getAngle()/kShooterAngleScale);
     SmartDashboard.putNumber("Shooter RPM", getSpeed());
+    SmartDashboard.putBoolean("Is Hood At Home", isHoodAtHomePosition());
   }
 }
