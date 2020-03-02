@@ -20,6 +20,20 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
+  private static final float kHoodForwardSoftLimit = 100;
+  private static final float kHoodReverseSoftLimit = 5;
+
+  // Shooter
+  /**
+   * TO DO:
+   * determine cureent threshold boiiiiiiii for calibration of hood position
+   */
+  public static final double kCurrentThreshold = 0.04;
+
+  //conversion factor of the hood angler. The first number is the gear ratio
+  //The second number is degrees over count per rev
+  public final static double kShooterAngleScale = ((1/125)*(360/42));
+
   // the flywheel motor
   private final WPI_CANSparkMax m_shooterMaster;
   private final WPI_CANSparkMax m_shooterSlave;
@@ -51,7 +65,8 @@ public class Shooter extends SubsystemBase {
   private final static double kFlyFF = 0.0;
 
   //PID Debugging for Flywheel
-  private double goalSpeed = 0.0;
+  private double m_goalSpeed = 0.0;
+  private double m_goalHoodAngle = 0;
 
   /**
    * Creates a new Shooter.
@@ -59,6 +74,9 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     setName("Shooter");
 
+    /*
+     * Shooter Flywheel
+     */
     m_shooterMaster = new WPI_CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
     initSparkMax(m_shooterMaster);
     m_shooterMaster.setInverted(Constants.kShooterInverted);
@@ -70,19 +88,31 @@ public class Shooter extends SubsystemBase {
     addChild("Shooter Slave", m_shooterSlave);
 
     m_shooterEncoder = m_shooterMaster.getEncoder();
+    m_flywheelPID = new CANPIDController(m_shooterMaster);
 
-    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngle, MotorType.kBrushless);
+    //set PID coefficeint of flywheel
+    m_flywheelPID.setP(kFlyP);
+    m_flywheelPID.setI(kFlyI);
+    m_flywheelPID.setD(kFlyD);
+    m_flywheelPID.setIZone(kFlyIz);
+    m_flywheelPID.setFF(kFlyFF);
+
+    /*
+     * Shooter Hood
+     */
+    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
     m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
+    m_shooterAngleMotor.setSmartCurrentLimit(3);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
-    
-    m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
-    m_shooterAngleEncoder.setPositionConversionFactor(Constants.kShooterAngleScale);
-    //42 counts per revolution
-    //addChild("Shooter Angle Encoder", m_shooterAngleEncoder);
 
-    m_flywheelPID = new CANPIDController(m_shooterMaster);
+    //42 counts per revolution
+    m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
+    m_shooterAngleEncoder.setPositionConversionFactor(kShooterAngleScale);
+
     m_hoodPID = new CANPIDController(m_shooterAngleMotor);
 
     //set PID coefficeints of hood
@@ -91,18 +121,16 @@ public class Shooter extends SubsystemBase {
     m_hoodPID.setD(kHoodD);
     m_hoodPID.setIZone(kHoodIz);
     m_hoodPID.setFF(kHoodFF);
-    
-    //set PID coefficeint of flywheel
-    m_flywheelPID.setP(kFlyP);
-    m_flywheelPID.setI(kFlyI);
-    m_flywheelPID.setD(kFlyD);
-    m_flywheelPID.setIZone(kFlyIz);
-    m_flywheelPID.setFF(kFlyFF);
   }
 
   private void initSparkMax(CANSparkMax spark){
     spark.restoreFactoryDefaults();
     spark.setSmartCurrentLimit(40); // 40 amps
+  }
+
+  public void enableHoodSoftLimits(boolean enabled) {
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, enabled);
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, enabled);
   }
 
   /**
@@ -113,43 +141,40 @@ public class Shooter extends SubsystemBase {
     m_shooterMaster.set(percentOutput);
   }
 
-/**
- * Set goal 
- * @param goalRPM goal speed/velocity in rotation per min.
- */
+  /**
+   * Set goal
+   * @param goalRPM goal speed/velocity in rotation per min.
+   */
   public void shootClosedLoop(double goalRPM){
     m_flywheelPID.setReference(goalRPM, ControlType.kVelocity);
-    goalSpeed = goalRPM;
+    m_goalSpeed = goalRPM;
   }
-/**
- * Sets goal angle for the Hood using PID
- * @param angle goal angle of hood in degrees
- */
-  public void setAngleMotorDegrees(double goalAngle) {
+  /**
+   * Sets goal angle for the Hood using PID
+   * @param goalAngle goal angle of hood in degrees
+   */
+  public void setHoodAngleDegrees(double goalAngle) {
     m_hoodPID.setReference(goalAngle, ControlType.kPosition);
-
+    m_goalHoodAngle = goalAngle;
   }
 
-  public void setAngleMotorSpeed(double percentOutput){
+  public void setHoodAngleSpeed(double percentOutput){
     m_shooterAngleMotor.set(percentOutput);
   }
-/**
- * Determines whether hood is at home position
- */
-  public boolean isHoodPosition(){
+  /**
+   * Determines whether hood is at home position
+   */
+  public boolean isHoodAtHomePosition(){
+    return getHoodCurrent() > kCurrentThreshold;
+  }
+
+  public double getHoodCurrent() {
     //calculates the average
     double average = 0;
     for(int i = 0; i<5; i++) {
       average = average+currentList[i];
     }
-    average = average/5;
-    
-    if (average>Constants.kCurrentThreshold) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return average/5;
   }
 
   public double getAngle(){
@@ -165,11 +190,15 @@ public class Shooter extends SubsystemBase {
 
   public double getSpeedError(){
     double currentSpeed = getSpeed();
-    double error = goalSpeed - currentSpeed;
+    double error = m_goalSpeed - currentSpeed;
     return error;
   }
 
-  public void initEncoder(){
+  public double getHoodAngleError() {
+    return m_goalHoodAngle - getAngle();
+  }
+
+  public void zeroHoodEncoder() {
       m_shooterAngleEncoder.setPosition(0);
   }
 
@@ -181,6 +210,10 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor.stopMotor();
   }
 
+  public void stopHoodMotor () {
+    m_shooterAngleMotor.stopMotor();
+  }
+
 
   @Override
   public void periodic() {
@@ -188,6 +221,10 @@ public class Shooter extends SubsystemBase {
     double newCurrent = m_shooterAngleMotor.getOutputCurrent();
     currentList[positionInList%5] = newCurrent;
     positionInList++;
+    SmartDashboard.putNumber("Hood Current", getHoodCurrent());
+    SmartDashboard.putNumber("Hood Angle", getAngle());
+    SmartDashboard.putNumber("Hood Angle(Raw)", getAngle()/kShooterAngleScale);
     SmartDashboard.putNumber("Shooter RPM", getSpeed());
+    SmartDashboard.putBoolean("Is Hood At Home", isHoodAtHomePosition());
   }
 }
