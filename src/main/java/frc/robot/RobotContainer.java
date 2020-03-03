@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.AutoAlignCommand;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.ForwardStorageExitCommand;
@@ -32,10 +33,7 @@ import frc.robot.commands.ReverseStorageExitCommand;
 import frc.robot.commands.TestStorageBackwardCommand;
 import frc.robot.commands.TestStorageForwardCommand;
 import frc.robot.commands.WaitForBallCommand;
-import frc.robot.commands.shooter.AimShooterHoodDownCommand;
-import frc.robot.commands.shooter.AimShooterHoodUpCommand;
-import frc.robot.commands.shooter.ManualShooterCommand;
-import frc.robot.commands.shooter.TestShooterCommand;
+import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
@@ -86,6 +84,7 @@ public class RobotContainer {
     ));
 
     m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
+    m_intake.setDefaultCommand(new IntakeRetractCommand(m_intake));
   }
 
   /**
@@ -139,39 +138,41 @@ public class RobotContainer {
       .withSize(2,2)
       .withPosition(0,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
-
-
-      storageCommands.add(new TestStorageBackwardCommand(m_storage));
-      storageCommands.add(new TestStorageForwardCommand(m_storage));
-      storageCommands.add(new LoadConveyorCommand(m_storage));
-      storageCommands.add(new ParallelCommandGroup(
-        new IntakeDumpCommand(m_intake),
-        new TestStorageBackwardCommand(m_storage)
-      ));
-      storageCommands.add(m_storage);
+    storageCommands.add(m_storage);
+    storageCommands.add(new TestStorageBackwardCommand(m_storage));
+    storageCommands.add(new TestStorageForwardCommand(m_storage));
+    storageCommands.add(new LoadConveyorCommand(m_storage));
+    storageCommands.add(new ParallelCommandGroup(
+      new IntakeDumpCommand(m_intake),
+      new TestStorageBackwardCommand(m_storage)
+    ));
 
     ShuffleboardLayout intakeCommands = Shuffleboard.getTab("Commands")
       .getLayout("Intake", BuiltInLayouts.kList)
       .withSize(2,2)
       .withPosition(2,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
+    intakeCommands.add(m_intake);
     intakeCommands.add(new IntakeDeployCommand(m_intake));
     intakeCommands.add(new IntakeRetractCommand(m_intake));
-    intakeCommands.add(m_intake);
 
     ShuffleboardLayout shooterCommands = Shuffleboard.getTab("Commands")
       .getLayout("Shooter", BuiltInLayouts.kList)
       .withSize(2,2)
       .withPosition(4,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
-    shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
     shooterCommands.add(m_shooter);
+    shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
+    shooterCommands.add("Zero Hood encoder", new InstantCommand(m_shooter::zeroHoodEncoder, m_shooter));
+    shooterCommands.add("Calibrate Shooter Hood", new ShooterCalibrateCommand(m_shooter));
+    shooterCommands.add("Set hood motor to 45 degrees", new AimShooterHoodToAngleCommand(45, m_shooter));
+
 
     ShuffleboardLayout storageExit = Shuffleboard.getTab("Commands")
-            .getLayout("StorageExit", BuiltInLayouts.kList)
-            .withSize(2,2)
-            .withPosition(6,0)
-            .withProperties(Map.of("Label position", "HIDDEN"));
+      .getLayout("StorageExit", BuiltInLayouts.kList)
+      .withSize(2,2)
+      .withPosition(6,0)
+      .withProperties(Map.of("Label position", "HIDDEN"));
     storageExit.add(m_storageExit);
 
     // SmartDashboard.putData("Dump Powercells", );
