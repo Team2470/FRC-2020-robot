@@ -50,7 +50,7 @@ public class Shooter extends SubsystemBase {
 
   //Hood PID
   private final CANPIDController m_hoodPID;
-  private final static double kHoodP = 0.0;
+  private final static double kHoodP = 0.02;
   private final static double kHoodI = 0.0;
   private final static double kHoodD = 0.0;
   private final static double kHoodIz = 0.0;
@@ -222,6 +222,7 @@ public class Shooter extends SubsystemBase {
     currentList[positionInList%5] = newCurrent;
     positionInList++;
     SmartDashboard.putNumber("Hood Current", getHoodCurrent());
+    SmartDashboard.putNumber("Hood Voltage", m_shooterAngleMotor.getAppliedOutput());
     SmartDashboard.putNumber("Hood Angle", getAngle());
     SmartDashboard.putNumber("Hood Angle(Raw)", getAngle()/kShooterAngleScale);
     SmartDashboard.putNumber("Shooter RPM", getSpeed());
