@@ -102,9 +102,9 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
-    m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
-    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
+    m_shooterAngleMotor.setIdleMode(WPI_CANSparkMax.IdleMode.kBrake);
+    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
+    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
     m_shooterAngleMotor.setSmartCurrentLimit(3);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
 
@@ -128,8 +128,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void enableHoodSoftLimits(boolean enabled) {
-    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, enabled);
-    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, enabled);
+    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, enabled);
+    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, enabled);
   }
 
   /**

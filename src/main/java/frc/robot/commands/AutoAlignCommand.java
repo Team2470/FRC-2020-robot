@@ -21,7 +21,6 @@ public class AutoAlignCommand extends CommandBase {
   private final double m_kp = 0.1;
   private final double m_minimum = 0.05;
   private final Shooter m_shooter;
-  private double m_targetHoodAngle;
   /**
    * Creates a new AutoAlignCommand.
    */
@@ -61,19 +60,20 @@ public class AutoAlignCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double hoodAngleOutput = 0.0;
 
     if(m_vision.getTargetFound())  {
       double angle = m_vision.getHorizontalAngleD();
-      double turnAngle = getAngleAdjust(angle);
+      double angleOutput = getAngleAdjust(angle);
 
       double distance = m_vision.geTargetDistanceM();
-      m_targetHoodAngle = calculateHoodAngle(distance);
+      hoodAngleOutput = calculateHoodAngle(distance);
 
-      m_drive.arcadeDrive(0, turnAngle);
-      m_shooter.setAngleMotorDegrees(m_targetHoodAngle);
+      m_drive.arcadeDrive(0, angleOutput);
+      m_shooter.setHoodAngleDegrees(hoodAngleOutput);
 
     }
-    SmartDashboard.putNumber("Hood Angle", m_targetHoodAngle);
+    SmartDashboard.putNumber("Hood Angle", hoodAngleOutput);
   }
 
   // Called once the command ends or is interrupted.
@@ -87,7 +87,7 @@ public class AutoAlignCommand extends CommandBase {
   public boolean isFinished() {
 
     boolean targetAligned = Math.abs(m_vision.getHorizontalAngleD()) < 0.5;
-    boolean hoodReady = Math.abs(m_targetHoodAngle - m_shooter.getAngle()) < 0.5;
+    boolean hoodReady = Math.abs(m_shooter.getHoodAngleError()) < 0.5;
     return targetAligned && hoodReady;
 
   }
