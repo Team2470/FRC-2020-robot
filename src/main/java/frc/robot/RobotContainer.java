@@ -10,6 +10,8 @@ package frc.robot;
 import java.util.Map;
 
 import com.kennedyrobotics.triggers.DPadTrigger;
+
+import bjorg.command.NamedInstantCommand;
 import bjorg.triggers.XboxControllerTrigger;
 import com.kennedyrobotics.triggers.DPadTrigger.DPad;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.AutoAlignCommand;
 import frc.robot.commands.DriveWithController;
 import frc.robot.commands.ForwardStorageExitCommand;
 import frc.robot.commands.IndexBallCommand;
@@ -36,6 +39,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.StorageExitSubsystem;
 import frc.robot.subsystems.StorageSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -56,7 +60,7 @@ public class RobotContainer {
   private final StorageSubsystem m_storage = new StorageSubsystem();
   private final StorageExitSubsystem m_storageExit = new StorageExitSubsystem();
   private final Climber m_climber = new Climber();
-
+  private final Vision m_vision = new Vision();
   private final XboxController m_controller = new XboxController(Constants.kControllerDriver); 
 
   // private final InternalButton m_indexPowercellButton = new InternalButton();
@@ -172,6 +176,16 @@ public class RobotContainer {
     storageExit.add(m_storageExit);
 
     // SmartDashboard.putData("Dump Powercells", );
+    ShuffleboardLayout visionCommands = Shuffleboard.getTab("Commands")
+    .getLayout("Vision", BuiltInLayouts.kList)
+    .withSize(2,2)
+    .withPosition(8,0)
+    .withProperties(Map.of("Label position", "HIDDEN"));
+    visionCommands.add(new NamedInstantCommand("Driver Mode", () -> m_vision.setDriverMode(true), m_vision));
+    visionCommands.add(new NamedInstantCommand("Vision Mode", () -> m_vision.setDriverMode(false), m_vision));
+    visionCommands.add(new NamedInstantCommand("Conveyor View", () -> m_vision.viewConveyor(true), m_vision));
+    visionCommands.add(new NamedInstantCommand("Target View", () -> m_vision.viewConveyor(false), m_vision));
+    visionCommands.add(new AutoAlignCommand(m_vision, m_drive, m_shooter));
   }
 
   public void periodic() {

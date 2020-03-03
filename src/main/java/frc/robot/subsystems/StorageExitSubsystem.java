@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import bjorg.sim.WPI_CANSparkMax;
@@ -30,7 +29,7 @@ public class StorageExitSubsystem extends SubsystemBase {
 
   }
 
-  private void initSparkMax(CANSparkMax spark){
+  private void initSparkMax(WPI_CANSparkMax spark){
     spark.restoreFactoryDefaults();
     spark.setSmartCurrentLimit(40); // 40 amps
   }

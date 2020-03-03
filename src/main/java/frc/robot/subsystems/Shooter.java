@@ -7,12 +7,11 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import bjorg.sim.WPI_CANEncoder;
 import bjorg.sim.WPI_CANSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,12 +37,12 @@ public class Shooter extends SubsystemBase {
   private final WPI_CANSparkMax m_shooterMaster;
   private final WPI_CANSparkMax m_shooterSlave;
 
-  private final CANEncoder m_shooterEncoder;
+  private final WPI_CANEncoder m_shooterEncoder;
 
   // controls the angle of hood
   private final WPI_CANSparkMax m_shooterAngleMotor;
 
-  private final CANEncoder m_shooterAngleEncoder;
+  private final WPI_CANEncoder m_shooterAngleEncoder;
 
   double currentList[] = new double[5];
   int positionInList = 0;
@@ -103,9 +102,9 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
-    m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
-    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
+    m_shooterAngleMotor.setIdleMode(WPI_CANSparkMax.IdleMode.kBrake);
+    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
+    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
     m_shooterAngleMotor.setSmartCurrentLimit(3);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
 
@@ -123,14 +122,14 @@ public class Shooter extends SubsystemBase {
     m_hoodPID.setFF(kHoodFF);
   }
 
-  private void initSparkMax(CANSparkMax spark){
+  private void initSparkMax(WPI_CANSparkMax spark) {
     spark.restoreFactoryDefaults();
     spark.setSmartCurrentLimit(40); // 40 amps
   }
 
   public void enableHoodSoftLimits(boolean enabled) {
-    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, enabled);
-    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, enabled);
+    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, enabled);
+    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, enabled);
   }
 
   /**

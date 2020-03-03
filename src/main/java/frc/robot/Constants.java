@@ -62,6 +62,11 @@ public final class Constants {
     public static final int kStorageBallOutputChannel = 1;
     public static final int kClimerEncoderChannelA = 2;
     public static final int kClimerEncoderChannelB = 3;
+
+    //vision
+    public static final double kTargetHeightM = 2.5;
+    public static final double kCameraHeightM = 0.925;
+    public static final double kCameraAngleD = 12;
     
 }
 
