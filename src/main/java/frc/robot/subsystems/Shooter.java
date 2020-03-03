@@ -49,7 +49,7 @@ public class Shooter extends SubsystemBase {
 
   //Hood PID
   private final CANPIDController m_hoodPID;
-  private final static double kHoodP = 0.02;
+  private final static double kHoodP = 0.05;
   private final static double kHoodI = 0.0;
   private final static double kHoodD = 0.0;
   private final static double kHoodIz = 0.0;
@@ -107,6 +107,9 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
     m_shooterAngleMotor.setSmartCurrentLimit(3);
     addChild("Shooter Angle Motor", m_shooterAngleMotor);
+    //in secs
+    m_shooterAngleMotor.setClosedLoopRampRate(0.75);
+
 
     //42 counts per revolution
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();

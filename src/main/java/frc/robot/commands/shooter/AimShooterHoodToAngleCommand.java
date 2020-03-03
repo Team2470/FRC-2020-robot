@@ -16,6 +16,13 @@ public class AimShooterHoodToAngleCommand extends CommandBase {
         addRequirements(m_shooter);
     }
 
+    public AimShooterHoodToAngleCommand(String name, double goalAngleDegrees, Shooter shooter) {
+        m_shooter = shooter;
+        m_goalAngleDegrees = goalAngleDegrees;
+        addRequirements(m_shooter);
+        setName(name);
+    }
+
     @Override
     public void initialize() {
         m_shooter.setHoodAngleDegrees(m_goalAngleDegrees);

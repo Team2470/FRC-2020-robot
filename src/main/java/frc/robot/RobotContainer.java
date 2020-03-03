@@ -163,9 +163,13 @@ public class RobotContainer {
       .withProperties(Map.of("Label position", "HIDDEN"));
     shooterCommands.add(m_shooter);
     shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
-    shooterCommands.add("Zero Hood encoder", new InstantCommand(m_shooter::zeroHoodEncoder, m_shooter));
+    shooterCommands.add(new NamedInstantCommand("Zero Hood Encoder", m_shooter::zeroHoodEncoder, m_shooter));
     shooterCommands.add("Calibrate Shooter Hood", new ShooterCalibrateCommand(m_shooter));
-    shooterCommands.add("Set hood motor to 45 degrees", new AimShooterHoodToAngleCommand(45, m_shooter));
+    shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 45 degrees", 45, m_shooter));
+    shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 20 degrees", 20, m_shooter));
+    shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 60 degrees", 60, m_shooter));
+    shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 5 degrees", 5, m_shooter));
+    shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 90 degrees", 90, m_shooter));
 
 
     ShuffleboardLayout storageExit = Shuffleboard.getTab("Commands")
