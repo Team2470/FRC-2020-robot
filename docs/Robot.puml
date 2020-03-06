@@ -1,0 +1,17 @@
+@startuml
+
+RobotBase : DriverStation m_ds
+
+class IterativeRobotBase {
+
+  # double m_period
+
+  + autonomousInit()
+
+
+
+}
+
+RobotBase <|-- IterativeRobotBase
+
+@enduml

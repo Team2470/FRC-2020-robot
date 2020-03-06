@@ -1,0 +1,13 @@
+// {type:class}
+// {direction:topDown}
+// {generate:true}
+
+[RobotBase|startRobot()]
+[RobotBase]<>-m_ds>[DriverStation]
+
+[IterativeRobotBase|#m_period:double|autonomousInit();autonomousPeriodic();disabledInit();disabledPeriodic();robotInit();robotPeriodic();teleopInit();teleopPeriodic;testInit();testPeriodic]
+
+[RobotBase]^[IterativeRobotBase]
+
+[IterativeRobotBase]^[TimedRobot]
+[TimedRobot]^[Robot]
