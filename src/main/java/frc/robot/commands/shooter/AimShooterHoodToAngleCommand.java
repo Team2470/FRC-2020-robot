@@ -5,7 +5,7 @@ import frc.robot.subsystems.Shooter;
 
 public class AimShooterHoodToAngleCommand extends CommandBase {
 
-    private final double kToleranceDegrees = 1;
+    private final double kToleranceDegrees = 0.5;
 
     private final Shooter m_shooter;
     private double m_goalAngleDegrees = 0;

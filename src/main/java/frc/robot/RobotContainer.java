@@ -14,6 +14,8 @@ import com.kennedyrobotics.triggers.DPadTrigger;
 import bjorg.command.NamedInstantCommand;
 import bjorg.triggers.XboxControllerTrigger;
 import com.kennedyrobotics.triggers.DPadTrigger.DPad;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -83,7 +85,7 @@ public class RobotContainer {
       new IndexBallCommand(m_storage)
     ));
 
-    m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
+    //m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
     m_intake.setDefaultCommand(new IntakeRetractCommand(m_intake));
   }
 
@@ -161,6 +163,14 @@ public class RobotContainer {
       .withSize(2,2)
       .withPosition(4,0)
       .withProperties(Map.of("Label position", "HIDDEN"));
+
+    ShuffleboardLayout setShooterCommands = Shuffleboard.getTab("Commands")
+    .getLayout("Hood Angle Setter", BuiltInLayouts.kList);
+
+    NetworkTableEntry shooterAngleNetworkEntry = setShooterCommands
+    .add("Shooter Hood Angle", 0)
+    .getEntry();
+
     shooterCommands.add(m_shooter);
     shooterCommands.add(new TestShooterCommand(m_shooter, m_storageExit));
     shooterCommands.add(new NamedInstantCommand("Zero Hood Encoder", m_shooter::zeroHoodEncoder, m_shooter));
@@ -171,6 +181,11 @@ public class RobotContainer {
     shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 5 degrees", 5, m_shooter));
     shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to 90 degrees", 90, m_shooter));
 
+    // shooterCommands.add(new AimShooterHoodToAngleCommand("Set hood to requested degrees", shooterAngleNetworkEntry.getDouble(0.0), m_shooter));
+    setShooterCommands.add(new NamedInstantCommand("Set Hood to N degrees", 
+    () -> (new AimShooterHoodToAngleCommand(shooterAngleNetworkEntry.getDouble(0.0), m_shooter)).schedule()
+    ));
+    // shooterCommands.addNumber("Observed angle", () -> shooterAngleNetworkEntry.getDouble((0.0)));
 
     ShuffleboardLayout storageExit = Shuffleboard.getTab("Commands")
       .getLayout("StorageExit", BuiltInLayouts.kList)

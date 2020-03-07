@@ -65,8 +65,8 @@ public final class Constants {
 
     //vision
     public static final double kTargetHeightM = 2.5;
-    public static final double kCameraHeightM = 0.925;
-    public static final double kCameraAngleD = 12;
+    public static final double kCameraHeightM = 0.60325;
+    public static final double kCameraAngleD = 13.23;
     
 }
 

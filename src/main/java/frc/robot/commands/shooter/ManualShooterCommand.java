@@ -37,7 +37,8 @@ public class ManualShooterCommand extends CommandBase {
   @Override
   public void execute() {
     double speed = m_controller.getTriggerAxis(Hand.kLeft);
-    m_shooter.shoot(speed);
+
+    m_shooter.shoot(0.8);
   }
 
   // Called once the command ends or is interrupted.
