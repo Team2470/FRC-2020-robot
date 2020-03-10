@@ -19,7 +19,7 @@ public class AutoAlignCommand extends CommandBase {
   private final Vision m_vision;
   private final DriveSubsystem m_drive;
   private final double m_kp = 0.01;
-  private final double m_minimum = 0.005;
+  private final double m_minimum = 0.29;
   private final Shooter m_shooter;
   /**
    * Creates a new AutoAlignCommand.

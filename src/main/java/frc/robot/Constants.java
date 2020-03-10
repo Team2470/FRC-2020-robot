@@ -30,10 +30,10 @@ public final class Constants {
 
 
     // CAN IDs
-    public static final int kDriveTalonRightAId = 13;
-    public static final int kDriveTalonRightBId = 14;
-    public static final int kDriveTalonLeftAId  = 11;
-    public static final int kDriveTalonLeftBId  = 12;
+    public static final int kDriveTalonRightAId = 11;
+    public static final int kDriveTalonRightBId = 12;
+    public static final int kDriveTalonLeftAId  = 13;
+    public static final int kDriveTalonLeftBId  = 14;
 
     public static final int kIntakeTalonId = 23;
     public static final boolean kIntakeInverted = false;
@@ -65,8 +65,8 @@ public final class Constants {
 
     //vision
     public static final double kTargetHeightM = 2.5;
-    public static final double kCameraHeightM = 0.60325;
-    public static final double kCameraAngleD = 13.23;
+    public static final double kCameraHeightM = 0.68;
+    public static final double kCameraAngleD = 30.94;
     
 }
 

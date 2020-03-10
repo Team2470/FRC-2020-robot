@@ -7,10 +7,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -36,11 +40,15 @@ public class DriveSubsystem extends SubsystemBase {
     // Motor Controllers
     m_leftMaster = new WPI_TalonFX(Constants.kDriveTalonLeftAId);
     m_leftSlave = new WPI_TalonFX(Constants.kDriveTalonLeftBId);
+    m_leftMaster.setInverted(true);
+    m_leftSlave.setInverted(InvertType.FollowMaster);
     m_leftSlave.follow(m_leftMaster);
     addChild("Left Talon", m_leftMaster);
     
     m_rightMaster = new WPI_TalonFX(Constants.kDriveTalonRightAId);
     m_rightSlave = new WPI_TalonFX(Constants.kDriveTalonRightBId);
+    m_rightMaster.setInverted(true);
+    m_rightSlave.setInverted(InvertType.FollowMaster);
     m_rightSlave.follow(m_rightMaster);
     addChild("Right Talon", m_rightMaster);
     m_diffDriveController = new DifferentialDrive(m_leftMaster, m_rightMaster);
@@ -63,6 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rotate The speed and direction to rotate
    */
   public void arcadeDrive(double move, double rotate) {
+    SmartDashboard.putNumber("Arcade Turn", rotate);
     m_diffDriveController.arcadeDrive(move, rotate, true);
   }
 
