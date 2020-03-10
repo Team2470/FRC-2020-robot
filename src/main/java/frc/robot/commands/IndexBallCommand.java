@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StorageSubsystem;
 
+@Deprecated
 public class IndexBallCommand extends CommandBase {
 
   private final StorageSubsystem m_index;
@@ -47,7 +48,7 @@ public class IndexBallCommand extends CommandBase {
   @Override
   public boolean isFinished() {
 
-    return !m_index.isBallAtInput();
+    return !m_index.isBallAtIntake() & !m_index.isBallAtInput();
 
   }
 }

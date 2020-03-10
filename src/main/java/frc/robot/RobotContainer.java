@@ -23,18 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.AutoAlignCommand;
-import frc.robot.commands.DriveWithController;
-import frc.robot.commands.ForwardStorageExitCommand;
-import frc.robot.commands.IndexBallCommand;
-import frc.robot.commands.IntakeDeployCommand;
-import frc.robot.commands.IntakeDumpCommand;
-import frc.robot.commands.IntakeRetractCommand;
-import frc.robot.commands.LoadConveyorCommand;
-import frc.robot.commands.ReverseStorageExitCommand;
-import frc.robot.commands.TestStorageBackwardCommand;
-import frc.robot.commands.TestStorageForwardCommand;
-import frc.robot.commands.WaitForBallCommand;
+import frc.robot.commands.*;
 import frc.robot.commands.shooter.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -80,12 +69,7 @@ public class RobotContainer {
 
     // Set default commands
     m_drive.setDefaultCommand(new DriveWithController(m_drive, m_controller));
-    m_storage.setDefaultCommand(new SequentialCommandGroup(
-      new WaitForBallCommand(m_storage),
-      new IndexBallCommand(m_storage)
-    ));
-
-    //m_storageExit.setDefaultCommand(new ReverseStorageExitCommand(m_storageExit));
+    m_storage.setDefaultCommand(new IndexPowerCellV2Command(m_storage));
     m_intake.setDefaultCommand(new IntakeRetractCommand(m_intake));
   }
 

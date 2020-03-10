@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StorageSubsystem;
 
+@Deprecated
 public class WaitForBallCommand extends CommandBase {
 
   private final StorageSubsystem m_storage;

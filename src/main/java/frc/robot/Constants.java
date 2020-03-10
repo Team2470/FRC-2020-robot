@@ -58,10 +58,11 @@ public final class Constants {
     public static final double kIntakeCaptureSpeed = 0.5;
 
     //DigitalIO
+    public static final int kStorageBallIntakeChannel = 1;
     public static final int kStorageBallInputChannel = 0;
-    public static final int kStorageBallOutputChannel = 1;
-    public static final int kClimerEncoderChannelA = 2;
-    public static final int kClimerEncoderChannelB = 3;
+    public static final int kStorageBallOutputChannel = 2;
+    public static final int kClimerEncoderChannelA = 3;
+    public static final int kClimerEncoderChannelB = 4;
 
     //vision
     public static final double kTargetHeightM = 2.5;
