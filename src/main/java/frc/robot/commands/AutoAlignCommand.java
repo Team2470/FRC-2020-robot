@@ -43,7 +43,7 @@ public class AutoAlignCommand extends CommandBase {
 
   }
   private double calculateHoodAngle(double distance) {
-    return distance * 0.98 + 23;
+    return distance * 5.11 + 45.7;
   }
 
   private double getAngleAdjust(double angle){
