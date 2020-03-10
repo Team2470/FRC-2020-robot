@@ -19,7 +19,7 @@ public class AutoAlignCommand extends CommandBase {
   private final Vision m_vision;
   private final DriveSubsystem m_drive;
   private final double m_kp = 0.01;
-  private final double m_minimum = 0.005;
+  private final double m_minimum = 0.29;
   private final Shooter m_shooter;
   /**
    * Creates a new AutoAlignCommand.
@@ -43,7 +43,7 @@ public class AutoAlignCommand extends CommandBase {
 
   }
   private double calculateHoodAngle(double distance) {
-    return distance * 0.98 + 23;
+    return distance * 5.11 + 45.7;
   }
 
   private double getAngleAdjust(double angle){
