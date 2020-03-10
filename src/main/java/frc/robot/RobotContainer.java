@@ -82,7 +82,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     JoystickButton intakeDeployButton = new JoystickButton(m_controller, XboxController.Button.kBumperLeft.value);
-    intakeDeployButton.whileHeld(new IntakeDeployCommand(m_intake));
+    intakeDeployButton.toggleWhenPressed(new IntakeDeployCommand(m_intake));
 
     JoystickButton dumpPowerCellsButton = new JoystickButton(m_controller, XboxController.Button.kY.value);
     dumpPowerCellsButton.whileHeld(new ParallelCommandGroup(
