@@ -40,6 +40,12 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
+// Maven central needed for JUnit
+repositories {
+    mavenCentral()
+}
+
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
@@ -52,7 +58,12 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+    implementation "gov.nist.math:jama:1.0.3"
+
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.0.3"
+    testCompile "org.mockito:mockito-core:2.+"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.3"
+
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -65,4 +76,8 @@ dependencies {
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+test {
+    useJUnitPlatform()
 }
