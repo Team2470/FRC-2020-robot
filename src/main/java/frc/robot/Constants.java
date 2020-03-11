@@ -72,6 +72,7 @@ public final class Constants {
     public static final double kCameraHeightM = 0.68;
     public static final double kCameraAngleD = 30.94;
 
+    public static double kHoodNeutralAngle = 5; // Degrees
     public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kHoodAutoAimMap = new InterpolatingTreeMap<>();
 
     static {
@@ -93,6 +94,16 @@ public final class Constants {
         kHoodAutoAimMap.put(new InterpolatingDouble(180.0), new InterpolatingDouble(61.5));
     }
 
+    public double getHoodAngle(double distance) {
+        InterpolatingDouble result = Constants.kHoodAutoAimMap.getInterpolated(new InterpolatingDouble(distance));
+        if (result != null) {
+            return result.value;
+        } else {
+            // Not in range
+            return Constants.kHoodNeutralAngle;
+        }
+    }
+
     public static double kAutoAimMaxRange = 220.0;
     public static double kFlywheelGoodBallRpmSetpoint = 6200.0;
     public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kFlywheelAutoAimMap = new InterpolatingTreeMap<>();
@@ -104,6 +115,15 @@ public final class Constants {
                 new InterpolatingDouble(Constants.kFlywheelGoodBallRpmSetpoint));
     }
 
+    private double getShootingSetpointRpm(double distance) {
+        InterpolatingDouble result = Constants.kFlywheelAutoAimMap.getInterpolated(new InterpolatingDouble(distance));
+        if (result != null) {
+            return result.value;
+        } else {
+            // Not in range
+            return 0;
+        }
+    }
 
 }
 
