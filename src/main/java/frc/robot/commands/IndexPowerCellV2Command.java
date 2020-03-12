@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.StorageSubsystem;
 
@@ -33,6 +34,7 @@ public class IndexPowerCellV2Command extends CommandBase {
 
     @Override
     public void execute() {
+        SmartDashboard.putString("Index PowerCell State", m_state.toString());
         switch(m_state){
             case kWaitForPowerCellAtIntake:
                 if (m_storage.isBallAtIntake()) {
