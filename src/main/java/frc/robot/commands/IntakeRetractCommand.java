@@ -7,28 +7,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class DriveWithController extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_drive;
-  private final XboxController m_xboxController;
-  
+public class IntakeRetractCommand extends CommandBase {
+
+  private final IntakeSubsystem m_intake;
+
   /**
-   * Creates a new DriveWithController.
-   * @param drive Drive subsystem to control
-   * @param xboxController xboxController controller to use for driving
-   * @param gearSwitchButton JoystickButton to use for gear shift
+   * Creates a new IntakeRetract.
    */
-  public DriveWithController(DriveSubsystem drive, XboxController xboxController) {
+  public IntakeRetractCommand(IntakeSubsystem intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = drive;
-    m_xboxController = xboxController;
 
-    addRequirements(m_drive);
+    m_intake = intake;
+
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
@@ -39,23 +33,14 @@ public class DriveWithController extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Get data from the controller
-    double move = m_xboxController.getY(Hand.kLeft);
-    double rotate = m_xboxController.getX(Hand.kRight);
 
-    // Process the data
-    move = -move;
-
-    // Tell the drive subsystem
-    m_drive.arcadeDrive(move, rotate);
-    m_drive.setGear(m_xboxController.getAButton());
-
+    m_intake.liftIntake();
+    m_intake.stopIntakeMotor();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.stop(); 
   }
 
   // Returns true when the command should end.

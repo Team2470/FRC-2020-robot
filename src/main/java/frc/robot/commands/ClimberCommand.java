@@ -7,60 +7,54 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Climber;
 
-public class DriveWithController extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveSubsystem m_drive;
-  private final XboxController m_xboxController;
-  
+public class ClimberCommand extends CommandBase {
+  public static final double kTargetDistance = 5;
+
+  Solenoid climberSolenoid = new Solenoid(0);
+  private final Climber m_climber;
+
+
   /**
-   * Creates a new DriveWithController.
-   * @param drive Drive subsystem to control
-   * @param xboxController xboxController controller to use for driving
-   * @param gearSwitchButton JoystickButton to use for gear shift
+   * Creates a new ClimberCommand.
    */
-  public DriveWithController(DriveSubsystem drive, XboxController xboxController) {
+  public ClimberCommand(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = drive;
-    m_xboxController = xboxController;
-
-    addRequirements(m_drive);
+    m_climber = climber;
+    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //deploy solenoid to contain climber arm
+    //climberSolenoid.set(true);
+    m_climber.climb(50);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Get data from the controller
-    double move = m_xboxController.getY(Hand.kLeft);
-    double rotate = m_xboxController.getX(Hand.kRight);
-
-    // Process the data
-    move = -move;
-
-    // Tell the drive subsystem
-    m_drive.arcadeDrive(move, rotate);
-    m_drive.setGear(m_xboxController.getAButton());
-
+    //retract solenoid to allow spring to deploy climber
+    //climberSolenoid.set(false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.stop(); 
+    m_climber.climb(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_climber.getDistance()>= kTargetDistance){
+      return true;
+    }else{
     return false;
+    }
   }
 }

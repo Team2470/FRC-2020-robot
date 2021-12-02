@@ -5,37 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class TestShooterCommand extends CommandBase {
+public class ManualShooterCommand extends CommandBase {
 
   // Subsystems
   private final Shooter m_shooter;
+  private final XboxController m_controller;
 
   /**
-   * Creates a new TestShooterCommand.
+   * Creates a new ManualShooterCommand.
    */
-  public TestShooterCommand(Shooter shooter) {
+  public ManualShooterCommand(Shooter shooter, XboxController controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = shooter;
+    m_controller = controller;
     addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Shooter Output", 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = SmartDashboard.getNumber("Shooter Output", 0.0);
-    m_shooter.shoot(speed);
+    double speed = m_controller.getTriggerAxis(Hand.kLeft);
+
+    m_shooter.shoot(0.8);
   }
 
   // Called once the command ends or is interrupted.
