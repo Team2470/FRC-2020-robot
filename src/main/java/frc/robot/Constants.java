@@ -30,50 +30,44 @@ public final class Constants {
 
 
     // CAN IDs
-    public static final int kDriveTalonRightAId = 13;
-    public static final int kDriveTalonRightBId = 14;
-    public static final int kDriveTalonLeftAId  = 11;
-    public static final int kDriveTalonLeftBId  = 12;
+    public static final int kDriveTalonRightAId = 11;
+    public static final int kDriveTalonRightBId = 12;
+    public static final int kDriveTalonLeftAId  = 13;
+    public static final int kDriveTalonLeftBId  = 14;
 
-    public static final int kIntakeTalonAdress = 22;
+    public static final int kIntakeTalonId = 23;
     public static final boolean kIntakeInverted = false;
-    public static final int kStorageMotorTalonID = 20;
-    public static final boolean kStorageMotorInverted = true;
+    public static final int kStorageMotorTalonID = 22;
+    public static final boolean kStorageMotorInverted = false;
 
     public static final int kShooterNeoMaster   = 3;
     public static final int kShooterNeoSlave = 1;
     public static final boolean kShooterInverted = true;
-    public static final int kShooterNeoAngle = 2;
+    public static final int kShooterNeoAngleId = 2;
     public static final boolean kShooterAngleInverted = true;
     public static int kShooterNeoExit = 4;
     public static boolean kShooterExitInverted = true;
     
     // PCM / Pneumatics Control Module (Id 0)
-    public static final int kIntakeSolenoidLeft = 0;
-    public static final int kIntakeSolenoidRight = 1;
-    public static final int kClimberSolenoid = 3;
-    public static final int kGearShiftSolenoidId = 4;
+    public static final int kIntakeSolenoid = 4;
+    public static final int kClimberSolenoid = 0;
+    public static final int kGearShiftSolenoidId = 5;
 
-
-    // Shooter
-    /**
-     * TO DO:
-     * determine cureent threshold boiiiiiiii for calibration of hood position
-     */
-    public static final double kCurrentThreshold = 0.5;
-
-    //conversion factor of the hood angler. The first number is the gear ratio
-    //The second number is degrees over count per rev
-    public final static double kShooterAngleScale = ((1/125)*(360/42));
 
     //Intake
     public static final double kIntakeCaptureSpeed = 0.5;
 
     //DigitalIO
+    public static final int kStorageBallIntakeChannel = 1;
     public static final int kStorageBallInputChannel = 0;
-    public static final int kStorageBallOutputChannel = 1;
-    public static final int kClimerEncoderChannelA = 2;
-    public static final int kClimerEncoderChannelB = 3;
+    public static final int kStorageBallOutputChannel = 2;
+    public static final int kClimerEncoderChannelA = 3;
+    public static final int kClimerEncoderChannelB = 4;
+
+    //vision
+    public static final double kTargetHeightM = 2.5;
+    public static final double kCameraHeightM = 0.68;
+    public static final double kCameraAngleD = 30.94;
     
 }
 

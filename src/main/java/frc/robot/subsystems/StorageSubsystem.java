@@ -19,6 +19,7 @@ import frc.robot.Constants;
 public class StorageSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX m_conveyorMotor;
+  private final DigitalInput m_ballAtIntake;
   private final DigitalInput m_ballAtInput;  
   private final DigitalInput m_ballAtOutput;
 
@@ -28,8 +29,10 @@ public class StorageSubsystem extends SubsystemBase {
    */
   public StorageSubsystem() {
     setName("Storage");
+    m_ballAtIntake = new DigitalInput(Constants.kStorageBallIntakeChannel);
     m_ballAtInput = new DigitalInput(Constants.kStorageBallInputChannel);
     m_ballAtOutput = new DigitalInput(Constants.kStorageBallOutputChannel);
+    addChild("Ball At Intake", m_ballAtIntake);
     addChild("Ball At Input", m_ballAtInput);
     addChild("Ball At Output", m_ballAtOutput);
     
@@ -51,6 +54,10 @@ public class StorageSubsystem extends SubsystemBase {
     return m_ballAtOutput.get();
   }
 
+  public boolean isBallAtIntake() {
+    return !m_ballAtIntake.get();
+  }
+
   public void stopMotors() {
     m_conveyorMotor.setNeutralMode(NeutralMode.Coast);
     m_conveyorMotor.stopMotor();
@@ -59,7 +66,8 @@ public class StorageSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Conveyor Ball at intake", isBallAtIntake());
     SmartDashboard.putBoolean("Conveyor Ball at input", isBallAtInput());
-    SmartDashboard.putBoolean("Conveyor Bal at output", isBallAtOutput());
+    SmartDashboard.putBoolean("Conveyor Ball at output", isBallAtOutput());
   }
 }
