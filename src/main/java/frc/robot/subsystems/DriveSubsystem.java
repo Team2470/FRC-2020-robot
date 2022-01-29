@@ -48,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
     
     m_rightMaster = new WPI_TalonFX(Constants.kDriveTalonRightAId);
     m_rightSlave = new WPI_TalonFX(Constants.kDriveTalonRightBId);
-    m_rightMaster.setInverted(true);
+    m_rightMaster.setInverted(false);
     m_rightSlave.setInverted(InvertType.FollowMaster);
     m_rightSlave.follow(m_rightMaster);
     addChild("Right Talon", m_rightMaster);
