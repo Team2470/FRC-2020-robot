@@ -8,8 +8,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,7 +19,7 @@ public class Climber extends SubsystemBase {
   private final Encoder m_climbEncoder;
   private final Talon m_winchMotor;
 
-  Solenoid climberSolenoid = new Solenoid(Constants.kClimberSolenoid);
+  Solenoid climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.kClimberSolenoid);
   /**
    * Creates a new climberSubsystem
    */
@@ -31,7 +32,7 @@ public class Climber extends SubsystemBase {
   }
   //targetDist should not be max possible distance to account for sample time
   public void climb(int speed){
-    m_winchMotor.setSpeed(speed);
+    m_winchMotor.set(speed);
   }
 
   public double getDistance(){

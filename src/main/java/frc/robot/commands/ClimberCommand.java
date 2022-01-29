@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
@@ -14,7 +15,7 @@ import frc.robot.subsystems.Climber;
 public class ClimberCommand extends CommandBase {
   public static final double kTargetDistance = 5;
 
-  Solenoid climberSolenoid = new Solenoid(0);
+  Solenoid climberSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
   private final Climber m_climber;
 
 

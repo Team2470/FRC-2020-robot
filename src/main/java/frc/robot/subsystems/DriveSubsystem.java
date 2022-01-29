@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_diffDriveController = new DifferentialDrive(m_leftMaster, m_rightMaster);
 
     // Solenoid
-    m_gearShiftSolenoid = new Solenoid(Constants.kGearShiftSolenoidId);
+    m_gearShiftSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.kGearShiftSolenoidId);
   }
 
   /**

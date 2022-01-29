@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -40,8 +39,8 @@ public class DriveWithController extends CommandBase {
   @Override
   public void execute() {
     // Get data from the controller
-    double move = m_xboxController.getY(Hand.kLeft);
-    double rotate = m_xboxController.getX(Hand.kRight);
+    double move = m_xboxController.getLeftY();
+    double rotate = m_xboxController.getRightX();
 
     // Process the data
     move = -move;
