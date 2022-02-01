@@ -7,12 +7,14 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import bjorg.sim.WPI_CANEncoder;
-import bjorg.sim.WPI_CANSparkMax;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -34,15 +36,15 @@ public class Shooter extends SubsystemBase {
   public final static double kShooterAngleScale = ((1/125)*(360/42));
 
   // the flywheel motor
-  private final WPI_CANSparkMax m_shooterMaster;
-  private final WPI_CANSparkMax m_shooterSlave;
+  private final CANSparkMax m_shooterMaster;
+  private final CANSparkMax m_shooterSlave;
 
-  private final WPI_CANEncoder m_shooterEncoder;
+  private final CANEncoder m_shooterEncoder;
 
   // controls the angle of hood
-  private final WPI_CANSparkMax m_shooterAngleMotor;
+  private final CANSparkMax m_shooterAngleMotor;
 
-  private final WPI_CANEncoder m_shooterAngleEncoder;
+  private final CANEncoder m_shooterAngleEncoder;
 
   double currentList[] = new double[5];
   int positionInList = 0;
@@ -76,18 +78,18 @@ public class Shooter extends SubsystemBase {
     /*
      * Shooter Flywheel
      */
-    m_shooterMaster = new WPI_CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
+    m_shooterMaster = new CANSparkMax(Constants.kShooterNeoMaster, MotorType.kBrushless);
     initSparkMax(m_shooterMaster);
     m_shooterMaster.setInverted(Constants.kShooterInverted);
-    addChild("Shooter Master", m_shooterMaster);
+    //addChild("Shooter Master", m_shooterMaster);
 
-    m_shooterSlave = new WPI_CANSparkMax(Constants.kShooterNeoSlave, MotorType.kBrushless);
+    m_shooterSlave = new CANSparkMax(Constants.kShooterNeoSlave, MotorType.kBrushless);
     initSparkMax(m_shooterSlave);
     m_shooterSlave.follow(m_shooterMaster, true);
-    addChild("Shooter Slave", m_shooterSlave);
+    //addChild("Shooter Slave", m_shooterSlave);
 
     m_shooterEncoder = m_shooterMaster.getEncoder();
-    m_flywheelPID = new CANPIDController(m_shooterMaster);
+    m_flywheelPID = m_shooterMaster.getPIDController();
 
     //set PID coefficeint of flywheel
     m_flywheelPID.setP(kFlyP);
@@ -99,14 +101,14 @@ public class Shooter extends SubsystemBase {
     /*
      * Shooter Hood
      */
-    m_shooterAngleMotor = new WPI_CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
+    m_shooterAngleMotor = new CANSparkMax(Constants.kShooterNeoAngleId, MotorType.kBrushless);
     initSparkMax(m_shooterAngleMotor);
     m_shooterAngleMotor.setInverted(Constants.kShooterAngleInverted);
-    m_shooterAngleMotor.setIdleMode(WPI_CANSparkMax.IdleMode.kBrake);
-    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
-    m_shooterAngleMotor.setSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
+    m_shooterAngleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, kHoodReverseSoftLimit);
+    m_shooterAngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, kHoodForwardSoftLimit);
     m_shooterAngleMotor.setSmartCurrentLimit(3);
-    addChild("Shooter Angle Motor", m_shooterAngleMotor);
+    //addChild("Shooter Angle Motor", m_shooterAngleMotor);
     //in secs
     m_shooterAngleMotor.setClosedLoopRampRate(0.75);
 
@@ -115,7 +117,7 @@ public class Shooter extends SubsystemBase {
     m_shooterAngleEncoder = m_shooterAngleMotor.getEncoder();
     m_shooterAngleEncoder.setPositionConversionFactor(kShooterAngleScale);
 
-    m_hoodPID = new CANPIDController(m_shooterAngleMotor);
+    m_hoodPID = m_shooterAngleMotor.getPIDController();
 
     //set PID coefficeints of hood
     m_hoodPID.setP(kHoodP);
@@ -125,14 +127,14 @@ public class Shooter extends SubsystemBase {
     m_hoodPID.setFF(kHoodFF);
   }
 
-  private void initSparkMax(WPI_CANSparkMax spark) {
+  private void initSparkMax(CANSparkMax spark) {
     spark.restoreFactoryDefaults();
     spark.setSmartCurrentLimit(40); // 40 amps
   }
 
   public void enableHoodSoftLimits(boolean enabled) {
-    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kForward, enabled);
-    m_shooterAngleMotor.enableSoftLimit(WPI_CANSparkMax.SoftLimitDirection.kReverse, enabled);
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, enabled);
+    m_shooterAngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, enabled);
   }
 
   /**

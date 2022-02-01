@@ -11,14 +11,13 @@ import java.util.Map;
 
 import com.kennedyrobotics.triggers.DPadTrigger;
 
-import bjorg.command.NamedInstantCommand;
-import bjorg.triggers.XboxControllerTrigger;
 import com.kennedyrobotics.triggers.DPadTrigger.DPad;
 
+import bjorg.command.NamedInstantCommand;
+import bjorg.triggers.XboxControllerTrigger;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -81,7 +80,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    JoystickButton intakeDeployButton = new JoystickButton(m_controller, XboxController.Button.kBumperLeft.value);
+    JoystickButton intakeDeployButton = new JoystickButton(m_controller, XboxController.Button.kLeftBumper.value);
     intakeDeployButton.whileHeld(new IntakeDeployCommand(m_intake));
 
     JoystickButton dumpPowerCellsButton = new JoystickButton(m_controller, XboxController.Button.kY.value);
@@ -90,13 +89,13 @@ public class RobotContainer {
       new TestStorageBackwardCommand(m_storage)
     ));
 
-    JoystickButton conveyorForwardButton = new JoystickButton(m_controller, XboxController.Button.kBumperRight.value);
+    JoystickButton conveyorForwardButton = new JoystickButton(m_controller, XboxController.Button.kRightBumper.value);
     conveyorForwardButton.whileHeld(new ParallelCommandGroup(
       new TestStorageForwardCommand(m_storage),
       new ForwardStorageExitCommand(m_storageExit)
     ));
 
-    XboxControllerTrigger shooterTrigger = new XboxControllerTrigger(m_controller, Hand.kLeft);
+    XboxControllerTrigger shooterTrigger = new XboxControllerTrigger(m_controller);
     shooterTrigger.whileActiveOnce(new ManualShooterCommand(m_shooter, m_controller));
 
     DPadTrigger aimHoodUpTrigger = new DPadTrigger(m_controller, DPad.kUp);

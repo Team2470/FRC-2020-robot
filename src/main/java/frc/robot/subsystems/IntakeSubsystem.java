@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,7 +25,7 @@ public class IntakeSubsystem extends SubsystemBase
   {
     setName("Intake");
 
-    m_deploy = new Solenoid(Constants.kIntakeSolenoid);
+    m_deploy = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.kIntakeSolenoid);
     addChild("Intake Deploy Solenoid", m_deploy);
 
     m_intakeSpin = new WPI_VictorSPX(Constants.kIntakeTalonId);

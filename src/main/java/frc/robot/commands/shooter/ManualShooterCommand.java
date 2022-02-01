@@ -8,7 +8,6 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -36,7 +35,7 @@ public class ManualShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_controller.getTriggerAxis(Hand.kLeft);
+    double speed = m_controller.getLeftTriggerAxis();
 
     m_shooter.shoot(0.8);
   }

@@ -7,29 +7,29 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import bjorg.sim.WPI_CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class StorageExitSubsystem extends SubsystemBase {
 
   //moves powercell into shooter
-  private final WPI_CANSparkMax m_exitMotor;
+  private final CANSparkMax m_exitMotor;
 
   /**
    * Creates a new ConyeyorExitSubsystem.
    */
   public StorageExitSubsystem() {
 
-    m_exitMotor = new WPI_CANSparkMax(Constants.kShooterNeoExit, MotorType.kBrushless);
+    m_exitMotor = new CANSparkMax(Constants.kShooterNeoExit, MotorType.kBrushless);
     initSparkMax(m_exitMotor);
     m_exitMotor.setInverted(Constants.kShooterExitInverted);
 
   }
 
-  private void initSparkMax(WPI_CANSparkMax spark){
+  private void initSparkMax(CANSparkMax spark){
     spark.restoreFactoryDefaults();
     spark.setSmartCurrentLimit(40); // 40 amps
   }
