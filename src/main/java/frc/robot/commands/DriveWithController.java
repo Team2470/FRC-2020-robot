@@ -39,7 +39,7 @@ public class DriveWithController extends CommandBase {
   public void execute() {
     double xSpeed = -m_xboxController.getLeftY();
     double zRotation = m_xboxController.getRightX();
-    boolean quickTurn = m_xboxController.getLeftBumper();
+    boolean quickTurn = m_xboxController.getRightTriggerAxis() > 0.5;
 
     m_drive.curvatureDrive(xSpeed, zRotation, quickTurn);
     m_drive.setGear(m_xboxController.getAButton());

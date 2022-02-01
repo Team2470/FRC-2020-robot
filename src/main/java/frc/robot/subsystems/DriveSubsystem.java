@@ -76,7 +76,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_diffDriveController.arcadeDrive(move, rotate, true);
   }
   public void curvatureDrive(double xSpeed, double zRotation, boolean allowTurnInPlace){
-    xSpeed = Math.copySign(xSpeed*xSpeed, xSpeed)*0.5;
+    xSpeed = Math.copySign(xSpeed*xSpeed, xSpeed)*0.7;
     zRotation = Math.copySign(zRotation*zRotation, zRotation);
     m_diffDriveController.curvatureDrive(xSpeed, zRotation, allowTurnInPlace);
   }
