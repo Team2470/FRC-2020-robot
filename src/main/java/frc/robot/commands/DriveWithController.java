@@ -20,7 +20,6 @@ public class DriveWithController extends CommandBase {
    * Creates a new DriveWithController.
    * @param drive Drive subsystem to control
    * @param xboxController xboxController controller to use for driving
-   * @param gearSwitchButton JoystickButton to use for gear shift
    */
   public DriveWithController(DriveSubsystem drive, XboxController xboxController) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,15 +37,11 @@ public class DriveWithController extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Get data from the controller
-    double move = m_xboxController.getLeftY();
-    double rotate = m_xboxController.getRightX();
+    double xSpeed = -m_xboxController.getLeftY();
+    double zRotation = m_xboxController.getRightX();
+    boolean quickTurn = m_xboxController.getLeftBumper();
 
-    // Process the data
-    move = -move;
-
-    // Tell the drive subsystem
-    m_drive.arcadeDrive(move, rotate);
+    m_drive.curvatureDrive(xSpeed, zRotation, quickTurn);
     m_drive.setGear(m_xboxController.getAButton());
 
   }
