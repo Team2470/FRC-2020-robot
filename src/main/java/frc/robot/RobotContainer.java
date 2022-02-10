@@ -187,7 +187,7 @@ public class RobotContainer {
     visionCommands.add(new NamedInstantCommand("Vision Mode", () -> m_vision.setDriverMode(false), m_vision));
     visionCommands.add(new NamedInstantCommand("Conveyor View", () -> m_vision.viewConveyor(true), m_vision));
     visionCommands.add(new NamedInstantCommand("Target View", () -> m_vision.viewConveyor(false), m_vision));
-    visionCommands.add(new AutoAlignCommand(m_vision, m_drive, m_shooter));
+    visionCommands.add(new AutoAlignCommand(m_vision, m_drive, m_shooter, m_intake));
   }
 
   public void periodic() {

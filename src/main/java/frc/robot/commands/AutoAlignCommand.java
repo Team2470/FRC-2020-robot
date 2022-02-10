@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class AutoAlignCommand extends CommandBase {
   private final Vision m_vision;
@@ -21,18 +22,21 @@ public class AutoAlignCommand extends CommandBase {
   private final double m_kp = 0.01;
   private final double m_minimum = 0.29;
   private final Shooter m_shooter;
+  private final IntakeSubsystem m_intakeSubsystem;
   /**
    * Creates a new AutoAlignCommand.
    */
-  public AutoAlignCommand(Vision vision, DriveSubsystem drive, Shooter shooter) {
+  public AutoAlignCommand(Vision vision, DriveSubsystem drive, Shooter shooter, IntakeSubsystem intakeSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_vision = vision;
     m_drive = drive;
     m_shooter = shooter;
+    m_intakeSubsystem = intakeSubsystem;
     
     addRequirements(vision);
     addRequirements(drive);
     addRequirements(shooter);
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -69,8 +73,9 @@ public class AutoAlignCommand extends CommandBase {
       double distance = m_vision.geTargetDistanceM();
       hoodAngleOutput = calculateHoodAngle(distance);
 
-      m_drive.arcadeDrive(0, angleOutput);
-      m_shooter.setHoodAngleDegrees(hoodAngleOutput);
+     // m_drive.arcadeDrive(0, angleOutput);
+     // m_shooter.setHoodAngleDegrees(hoodAngleOutput);
+     m_intakeSubsystem.deployIntake();
 
     }
     SmartDashboard.putNumber("Hood Angle", hoodAngleOutput);
